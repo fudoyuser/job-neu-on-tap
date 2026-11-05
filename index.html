@@ -78,16 +78,8 @@ ul.clean li{margin-bottom:4px}
 .btn.ghost{background:transparent;color:var(--accent)}
 .btn:disabled{opacity:.5;cursor:default}
 .note{font-size:13px;color:var(--muted);margin-top:14px}
-/* flashcard */
-.study{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media (max-width:760px){.study{grid-template-columns:1fr}}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;min-width:0}
-.card{min-height:220px;border:1px dashed var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;background:var(--bg)}
-.card .front{font-size:20px;font-weight:700;text-wrap:balance}
-.card .back{white-space:pre-line}
 .meta{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-bottom:10px;font-variant-numeric:tabular-nums}
-.progress{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:12px}
-.progress>i{display:block;height:100%;background:var(--accent);width:0}
 .q{font-weight:600;font-size:16.5px;margin:0 0 12px}
 .opts{display:flex;flex-direction:column;gap:8px}
 .opt{all:unset;padding:10px 14px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--bg)}
@@ -95,33 +87,21 @@ ul.clean li{margin-bottom:4px}
 .opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--surface))}
 .opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--surface))}
 .explain{margin-top:12px;font-size:14px;color:var(--muted)}
-/* playbook */
-.pb{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
-.pb .panel ol,.pb .panel ul{margin:0;padding-left:20px}
-.pb .panel li{margin-bottom:6px}
-.flag{color:var(--bad);font-weight:700}
-.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface);margin-top:18px}
-table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
-th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-td:first-child{font-weight:700;white-space:nowrap}
-tr:last-child td{border-bottom:0}
 footer{color:var(--muted);font-size:13px;padding-block:0 40px}
-@media (prefers-reduced-motion:no-preference){.card,.opt,.item{transition:background .15s,border-color .15s}}
+@media (prefers-reduced-motion:no-preference){.opt,.item{transition:background .15s,border-color .15s}}
 </style>
 
 <header class="top wrap">
   <div class="eyebrow">Job NEU · Sổ tay nghiệp vụ</div>
   <h1>Ôn tập vị trí công việc &amp; nhà tuyển dụng</h1>
-  <p class="lead">Tra cứu nhanh các vị trí sinh viên kinh tế hay ứng tuyển, hồ sơ các nhà tuyển dụng lớn, rồi tự kiểm tra bằng thẻ ghi nhớ và câu hỏi trắc nghiệm. Tab cuối dành riêng cho công việc của cán bộ Job NEU: làm việc với doanh nghiệp, kiểm duyệt tin, tư vấn sinh viên.</p>
+  <p class="lead">Tra cứu nhanh các vị trí sinh viên kinh tế hay ứng tuyển và hồ sơ các nhà tuyển dụng lớn, rồi làm quiz theo từng nhóm vị trí, nhóm công ty để tự kiểm tra.</p>
 </header>
 
 <nav class="tabs" aria-label="Các phần">
   <div class="wrap">
     <a href="#vi-tri" data-view="vi-tri">Vị trí công việc</a>
     <a href="#cong-ty" data-view="cong-ty">Công ty</a>
-    <a href="#on-tap" data-view="on-tap">Ôn tập</a>
-    <a href="#nghiep-vu" data-view="nghiep-vu">Nghiệp vụ Job NEU</a>
+    <a href="#quiz" data-view="quiz">Quiz</a>
   </div>
 </nav>
 
@@ -131,6 +111,7 @@ footer{color:var(--muted);font-size:13px;padding-block:0 40px}
     <p class="sub">Mỗi vị trí gồm việc làm hằng ngày, kỹ năng, công cụ, lộ trình thăng tiến, ngành học phù hợp và câu hỏi phỏng vấn hay gặp.</p>
     <div class="toolbar">
       <input type="search" id="posSearch" placeholder="Tìm vị trí, kỹ năng, công cụ…" aria-label="Tìm vị trí">
+      <button class="btn" id="posQuiz">Làm quiz</button>
     </div>
     <div class="chips" id="posChips" style="margin-bottom:16px"></div>
     <div class="split">
@@ -144,6 +125,7 @@ footer{color:var(--muted);font-size:13px;padding-block:0 40px}
     <p class="sub">Hồ sơ ngắn của các doanh nghiệp tuyển nhiều sinh viên kinh tế: ngành, nguồn gốc, vị trí hay tuyển, quy trình tuyển và điểm cần biết khi tư vấn.</p>
     <div class="toolbar">
       <input type="search" id="coSearch" placeholder="Tìm công ty, ngành, chương trình…" aria-label="Tìm công ty">
+      <button class="btn" id="coQuiz">Làm quiz</button>
     </div>
     <div class="chips" id="coChips" style="margin-bottom:16px"></div>
     <div class="split">
@@ -152,98 +134,22 @@ footer{color:var(--muted);font-size:13px;padding-block:0 40px}
     </div>
   </section>
 
-  <section id="v-on-tap" hidden>
-    <h2>Ôn tập</h2>
-    <p class="sub">Thẻ ghi nhớ để học thuộc, trắc nghiệm để tự kiểm tra. Thẻ bạn đánh dấu “Đã nhớ” được lưu trên trình duyệt này.</p>
-    <div class="study">
-      <div class="panel">
-        <h3>Thẻ ghi nhớ</h3>
-        <div class="toolbar">
-          <select id="deckSel" aria-label="Chọn bộ thẻ">
-            <option value="pos">Vị trí công việc</option>
-            <option value="co">Công ty</option>
-            <option value="gl">Thuật ngữ tuyển dụng</option>
-          </select>
-          <label style="display:flex;align-items:center;gap:6px;font-size:14px"><input type="checkbox" id="hideKnown"> Ẩn thẻ đã nhớ</label>
-        </div>
-        <div class="meta"><span id="fcCount">1 / 1</span><span id="fcKnown">Đã nhớ 0</span></div>
-        <div class="card" id="fcCard" tabindex="0" role="button" aria-label="Lật thẻ">
-          <div class="front" id="fcFront"></div>
-          <div class="back" id="fcBack" hidden></div>
-        </div>
-        <div class="progress"><i id="fcBar"></i></div>
-        <div class="row-actions">
-          <button class="btn ghost" id="fcPrev">Trước</button>
-          <button class="btn ghost" id="fcFlip">Lật thẻ</button>
-          <button class="btn" id="fcKnow">Đã nhớ</button>
-          <button class="btn ghost" id="fcNext">Tiếp</button>
-          <button class="btn ghost" id="fcShuffle">Xáo thẻ</button>
-        </div>
+  <section id="v-quiz" hidden>
+    <h2>Quiz theo nhóm</h2>
+    <p class="sub">Chọn một nhóm vị trí hoặc nhóm công ty, mỗi lượt 10 câu. Đáp án sai luôn lấy từ cùng nhóm trước nên bạn phải phân biệt được các vị trí, công ty gần giống nhau. Điểm cao nhất được lưu trên trình duyệt này.</p>
+    <div class="panel" style="max-width:760px">
+      <div class="toolbar">
+        <select id="qzSet" aria-label="Chọn nhóm quiz"></select>
+        <button class="btn ghost" id="qzRestart">Làm bộ mới</button>
       </div>
-      <div class="panel">
-        <h3>Trắc nghiệm</h3>
-        <div class="meta"><span id="qzNum">Câu 1 / 10</span><span id="qzScore">Đúng 0</span></div>
-        <p class="q" id="qzQ"></p>
-        <div class="opts" id="qzOpts"></div>
-        <p class="explain" id="qzExp" hidden></p>
-        <div class="row-actions">
-          <button class="btn" id="qzNext" disabled>Câu tiếp</button>
-          <button class="btn ghost" id="qzRestart">Làm bộ mới</button>
-        </div>
+      <div class="meta"><span id="qzNum">Câu 1 / 10</span><span><span id="qzScore">Đúng 0</span> · <span id="qzBest"></span></span></div>
+      <p class="q" id="qzQ" style="white-space:pre-line"></p>
+      <div class="opts" id="qzOpts"></div>
+      <p class="explain" id="qzExp" hidden></p>
+      <div class="row-actions">
+        <button class="btn" id="qzNext" disabled>Câu tiếp</button>
       </div>
     </div>
-  </section>
-
-  <section id="v-nghiep-vu" hidden>
-    <h2>Nghiệp vụ Job NEU</h2>
-    <p class="sub">Những việc lặp lại hằng ngày của một cổng việc làm trong trường đại học, và cách làm cho tốt.</p>
-    <div class="pb">
-      <div class="panel">
-        <h3>Quy trình làm việc với doanh nghiệp</h3>
-        <ol>
-          <li><b>Tiếp nhận:</b> xác minh tên pháp lý, mã số thuế, website, người liên hệ có email tên miền công ty.</li>
-          <li><b>Phân loại:</b> tập đoàn / doanh nghiệp vừa và nhỏ / startup / đơn vị tuyển dụng trung gian (headhunter).</li>
-          <li><b>Nắm nhu cầu:</b> vị trí, số lượng, ngành học, năm học, thời gian làm việc, hỗ trợ thực tập sinh, có giữ lại sau thực tập không.</li>
-          <li><b>Đăng tin:</b> chuẩn hoá tiêu đề, JD, yêu cầu, quyền lợi, hạn nộp, kênh nộp.</li>
-          <li><b>Kết nối:</b> gợi ý hình thức phù hợp: đăng tin, workshop, tham quan doanh nghiệp, ngày hội việc làm, học bổng.</li>
-          <li><b>Theo dõi:</b> số lượt ứng tuyển, số sinh viên được nhận, phản hồi của sinh viên về doanh nghiệp.</li>
-          <li><b>Duy trì:</b> cảm ơn, gửi báo cáo kết quả, mời tham gia sự kiện kỳ sau.</li>
-        </ol>
-      </div>
-      <div class="panel">
-        <h3>Dấu hiệu tin tuyển dụng đáng ngờ</h3>
-        <ul>
-          <li><span class="flag">Thu phí</span> đào tạo, đồng phục, đặt cọc, “phí hồ sơ” trước khi nhận việc.</li>
-          <li><span class="flag">Lương cao bất thường</span> so với yêu cầu, “việc nhẹ lương cao”, làm online nhận nhiệm vụ.</li>
-          <li><span class="flag">Không rõ danh tính:</span> không có tên công ty, địa chỉ, chỉ liên hệ qua Zalo/Telegram cá nhân.</li>
-          <li><span class="flag">Đòi thông tin nhạy cảm sớm:</span> ảnh CCCD hai mặt, tài khoản ngân hàng, mã OTP.</li>
-          <li><span class="flag">Mô tả mơ hồ:</span> không nêu việc cụ thể, hứa “thăng tiến ngay”, tuyển số lượng rất lớn quanh năm.</li>
-          <li><span class="flag">Đa cấp trá hình:</span> thu nhập chủ yếu từ việc kéo thêm người.</li>
-        </ul>
-        <p class="note">Gặp một trong các dấu hiệu trên thì tạm giữ tin, yêu cầu doanh nghiệp bổ sung giấy tờ trước khi duyệt.</p>
-      </div>
-      <div class="panel">
-        <h3>Tư vấn sinh viên theo năm học</h3>
-        <ul>
-          <li><b>Năm 1–2:</b> khám phá nghề qua workshop, câu lạc bộ, việc bán thời gian; làm CV đầu tiên.</li>
-          <li><b>Năm 3:</b> chọn 1–2 hướng nghề, thực tập hè, ôn bài test năng lực, luyện tiếng Anh phỏng vấn.</li>
-          <li><b>Năm 4:</b> rải hồ sơ theo mùa tuyển (Big4 và ngân hàng thường tuyển mạnh nửa cuối năm, chương trình Management Trainee thường mở đầu năm hoặc giữa năm), hoàn thiện LinkedIn.</li>
-          <li><b>Mới tốt nghiệp:</b> so sánh offer, hiểu lương gross/net, thời gian thử việc, bảo hiểm.</li>
-        </ul>
-      </div>
-      <div class="panel">
-        <h3>Câu hỏi nên hỏi doanh nghiệp</h3>
-        <ul>
-          <li>Thực tập sinh làm việc gì trong tuần đầu tiên? Ai hướng dẫn?</li>
-          <li>Tỷ lệ thực tập sinh được giữ lại năm trước là bao nhiêu?</li>
-          <li>Vòng tuyển gồm những bước nào, mất bao lâu?</li>
-          <li>Có hỗ trợ sinh viên làm bán thời gian theo lịch học không?</li>
-          <li>Doanh nghiệp muốn tuyển sinh viên ngành nào nhiều nhất trong năm tới?</li>
-        </ul>
-      </div>
-    </div>
-    <h3 style="margin-top:26px">Thuật ngữ tuyển dụng</h3>
-    <div class="tablewrap"><table><thead><tr><th>Thuật ngữ</th><th>Nghĩa</th></tr></thead><tbody id="glBody"></tbody></table></div>
   </section>
 </main>
 
@@ -305,7 +211,7 @@ ladder:["Chuyên viên","Chuyên viên cao cấp","Trưởng phòng thẩm đị
 majors:["Tài chính – Ngân hàng","Toán kinh tế","Thống kê"],
 interview:["Các chỉ số đánh giá khả năng thanh toán?","Phân biệt rủi ro tín dụng, thị trường, hoạt động"],
 tip:"Sinh viên Toán kinh tế, Thống kê có lợi thế ở mảng mô hình rủi ro (credit scoring)."},
-{id:"brand",name:"Chuyên viên Thương hiệu",en:"Brand Executive / Assistant Brand Manager",field:"Marketing",
+{id:"brand",name:"Chuyên viên Thương hiệu",en:"Brand Executive / Assistant Brand Manager",field:"Marketing – Kinh doanh",
 desc:"Quản lý một thương hiệu hoặc dòng sản phẩm: nghiên cứu người tiêu dùng, lên kế hoạch truyền thông, phối hợp agency. Phổ biến ở các công ty hàng tiêu dùng nhanh (FMCG).",
 tasks:["Phân tích thị phần, hành vi người tiêu dùng","Lên kế hoạch ra mắt sản phẩm, chiến dịch","Làm việc với agency quảng cáo","Theo dõi ngân sách và hiệu quả"],
 skills:["Hiểu người tiêu dùng","Tư duy số liệu","Quản lý dự án","Tiếng Anh tốt"],
@@ -314,7 +220,7 @@ ladder:["Brand Executive / ABM","Brand Manager","Senior BM","Marketing Manager /
 majors:["Marketing","Quản trị kinh doanh","Truyền thông marketing"],
 interview:["Phân tích một chiến dịch bạn thích","Bạn sẽ tăng thị phần cho sản phẩm X thế nào?","Case: doanh số giảm 15% trong quý"],
 tip:"Các cuộc thi case marketing do FMCG tổ chức là con đường vào nghề phổ biến, nên giới thiệu cho sinh viên năm 2–3."},
-{id:"digital",name:"Chuyên viên Digital Marketing",en:"Digital / Performance Marketing Executive",field:"Marketing",
+{id:"digital",name:"Chuyên viên Digital Marketing",en:"Digital / Performance Marketing Executive",field:"Marketing – Kinh doanh",
 desc:"Chạy quảng cáo trên nền tảng số, tối ưu chuyển đổi, quản lý nội dung mạng xã hội và SEO. Kết quả đo được bằng số liệu cụ thể.",
 tasks:["Chạy quảng cáo Facebook, Google, TikTok","Theo dõi CPC, CPA, ROAS","Tối ưu trang đích, SEO","Lên lịch nội dung"],
 skills:["Phân tích số liệu","Viết nội dung","Hiểu thuật toán nền tảng"],
@@ -323,7 +229,7 @@ ladder:["Executive","Specialist","Team Lead","Digital Marketing Manager"],
 majors:["Marketing","Thương mại điện tử","Công nghệ thông tin"],
 interview:["ROAS là gì, tính thế nào?","Chiến dịch có CTR cao nhưng không ra đơn, bạn kiểm tra gì?"],
 tip:"Chứng chỉ miễn phí Google Ads và GA4 là bằng chứng kỹ năng dễ đạt nhất cho sinh viên."},
-{id:"sales",name:"Chuyên viên Kinh doanh / Quản lý khách hàng lớn",en:"Sales Executive / Key Account",field:"Kinh doanh",
+{id:"sales",name:"Chuyên viên Kinh doanh / Quản lý khách hàng lớn",en:"Sales Executive / Key Account",field:"Marketing – Kinh doanh",
 desc:"Bán hàng và giữ quan hệ với khách hàng hoặc kênh phân phối (siêu thị, nhà phân phối, đại lý). Ở FMCG gọi là kênh MT (siêu thị hiện đại) và GT (tạp hoá truyền thống).",
 tasks:["Đàm phán hợp đồng, chiết khấu","Theo dõi doanh số, tồn kho kênh","Triển khai chương trình khuyến mại","Chăm sóc khách hàng lớn"],
 skills:["Đàm phán","Giao tiếp","Hiểu số liệu bán hàng"],
@@ -332,7 +238,7 @@ ladder:["Sales Executive","Supervisor","Area Sales Manager","Regional / National
 majors:["Quản trị kinh doanh","Marketing","Kinh doanh thương mại"],
 interview:["Bán cho tôi cây bút này","Khách hàng đòi chiết khấu cao hơn chính sách thì sao?"],
 tip:"Thu nhập phụ thuộc nhiều vào thưởng doanh số, nên giúp sinh viên đọc kỹ cơ chế lương trong offer."},
-{id:"hr",name:"Chuyên viên Nhân sự / Tuyển dụng",en:"HR Executive / Talent Acquisition",field:"Nhân sự",
+{id:"hr",name:"Chuyên viên Nhân sự / Tuyển dụng",en:"HR Executive / Talent Acquisition",field:"Nhân sự – Vận hành",
 desc:"Tuyển dụng, đào tạo, lương thưởng, quan hệ lao động. Mảng tuyển dụng và Employer Branding là đối tác làm việc trực tiếp với Job NEU.",
 tasks:["Đăng tin, sàng lọc CV, phỏng vấn","Tổ chức ngày hội việc làm, chương trình thực tập","Tính lương, bảo hiểm (mảng C&B)","Xây dựng thương hiệu nhà tuyển dụng"],
 skills:["Bộ luật Lao động","Giao tiếp","Bảo mật thông tin","Tổ chức sự kiện"],
@@ -341,7 +247,7 @@ ladder:["HR Executive","HR Specialist","HR Business Partner","HR Manager","HR Di
 majors:["Kinh tế nguồn nhân lực","Quản trị nhân lực","Quản trị kinh doanh"],
 interview:["Bạn đánh giá ứng viên bằng tiêu chí nào?","Xử lý khi ứng viên từ chối offer phút chót?"],
 tip:"Hiểu vị trí này giúp bạn nói chuyện cùng ngôn ngữ với đối tác tuyển dụng của doanh nghiệp."},
-{id:"scm",name:"Chuyên viên Chuỗi cung ứng / Mua hàng",en:"Supply Chain / Procurement Executive",field:"Logistics",
+{id:"scm",name:"Chuyên viên Chuỗi cung ứng / Mua hàng",en:"Supply Chain / Procurement Executive",field:"Nhân sự – Vận hành",
 desc:"Lập kế hoạch nhu cầu, mua hàng, quản lý kho và vận chuyển để hàng đến đúng nơi, đúng lúc, chi phí thấp nhất.",
 tasks:["Dự báo nhu cầu, lập kế hoạch sản xuất","Tìm và đánh giá nhà cung cấp","Theo dõi tồn kho","Làm chứng từ xuất nhập khẩu"],
 skills:["Tư duy quy trình","Đàm phán","Incoterms, thủ tục hải quan"],
@@ -368,7 +274,7 @@ ladder:["Junior BA","BA","Senior BA","Product Owner / Product Manager"],
 majors:["Hệ thống thông tin quản lý","Công nghệ thông tin","Tài chính – Ngân hàng"],
 interview:["Phân biệt yêu cầu chức năng và phi chức năng","Viết user story cho tính năng chuyển tiền"],
 tip:"Sinh viên kinh tế biết thêm SQL và quy trình Agile/Scrum rất có lợi thế khi ứng tuyển BA ở ngân hàng."},
-{id:"mt",name:"Quản trị viên tập sự",en:"Management Trainee (MT)",field:"Chương trình đặc biệt",
+{id:"mt",name:"Quản trị viên tập sự",en:"Management Trainee (MT)",field:"Quản trị – Tư vấn",
 desc:"Chương trình tuyển sinh viên mới tốt nghiệp xuất sắc, luân chuyển qua nhiều phòng ban trong 1–2 năm để đào tạo thành quản lý. Cạnh tranh rất cao.",
 tasks:["Luân chuyển các bộ phận","Làm dự án thực tế được giao","Được kèm cặp bởi lãnh đạo cấp cao"],
 skills:["Lãnh đạo","Học nhanh","Tư duy chiến lược","Tiếng Anh thành thạo"],
@@ -377,7 +283,7 @@ ladder:["Management Trainee","Quản lý cấp trung (sau 1–2 năm)","Quản l
 majors:["Mọi ngành, ưu tiên thành tích học tập và hoạt động nổi bật"],
 interview:["Kể về lần bạn dẫn dắt một nhóm vượt khó","Giải một case kinh doanh theo nhóm (assessment centre)"],
 tip:"Vòng tuyển thường dài: hồ sơ, bài test online, video phỏng vấn, assessment centre, phỏng vấn lãnh đạo. Nên giúp sinh viên chuẩn bị sớm 3–6 tháng."},
-{id:"consult",name:"Chuyên viên Tư vấn",en:"Consultant / Business Analyst (tư vấn)",field:"Tư vấn",
+{id:"consult",name:"Chuyên viên Tư vấn",en:"Consultant / Business Analyst (tư vấn)",field:"Quản trị – Tư vấn",
 desc:"Giải quyết vấn đề cho doanh nghiệp khách hàng: chiến lược, vận hành, chuyển đổi số, tài chính. Có ở Big4 (mảng Consulting/Advisory) và các hãng tư vấn chiến lược.",
 tasks:["Nghiên cứu thị trường, đối thủ","Phân tích dữ liệu khách hàng","Làm slide đề xuất","Trình bày với ban lãnh đạo khách hàng"],
 skills:["Giải case (cấu trúc vấn đề)","Excel, PowerPoint","Viết và trình bày"],
@@ -491,38 +397,14 @@ process:"Hồ sơ → bài test → phỏng vấn.",
 tip:"Lựa chọn tốt cho sinh viên muốn kết hợp tài chính và công nghệ."}
 ];
 
-const GL=[
-["JD","Job Description: bản mô tả công việc gồm nhiệm vụ, yêu cầu, quyền lợi."],
-["Intern","Thực tập sinh, thường làm 2–6 tháng, có hoặc không có trợ cấp."],
-["Fresher","Người mới tốt nghiệp, dưới 1 năm kinh nghiệm."],
-["Junior / Senior","Cấp độ kinh nghiệm: Junior khoảng 1–3 năm, Senior thường từ 3–5 năm trở lên."],
-["Management Trainee (MT)","Chương trình quản trị viên tập sự, luân chuyển nhiều phòng ban để đào tạo thành quản lý."],
-["ATS","Applicant Tracking System: phần mềm quản lý và lọc hồ sơ ứng viên tự động theo từ khoá."],
-["Headhunter","Người hoặc công ty săn nhân sự, được doanh nghiệp trả phí khi tuyển thành công."],
-["Employer Branding","Xây dựng thương hiệu nhà tuyển dụng để thu hút ứng viên."],
-["EVP","Employee Value Proposition: những giá trị doanh nghiệp cam kết mang lại cho nhân viên."],
-["Assessment Centre","Vòng đánh giá tập trung: giải case nhóm, thuyết trình, phỏng vấn trong một buổi."],
-["STAR","Cấu trúc trả lời câu hỏi hành vi: Situation, Task, Action, Result."],
-["Offer letter","Thư mời nhận việc nêu vị trí, lương, ngày bắt đầu, thời gian thử việc."],
-["Lương Gross","Tổng lương trước khi trừ bảo hiểm bắt buộc và thuế TNCN."],
-["Lương Net","Lương thực nhận sau khi trừ bảo hiểm bắt buộc và thuế TNCN."],
-["Thử việc","Theo Bộ luật Lao động 2019, tối đa 60 ngày với công việc cần trình độ cao đẳng trở lên; lương thử việc ít nhất 85% lương chính thức."],
-["KPI","Key Performance Indicator: chỉ số đo hiệu quả công việc."],
-["C&B","Compensation & Benefits: mảng lương thưởng, phúc lợi trong nhân sự."],
-["HRBP","HR Business Partner: nhân sự đồng hành cùng một khối kinh doanh."],
-["Referral","Ứng viên được nhân viên nội bộ giới thiệu."],
-["MT / GT","Trong bán hàng FMCG: Modern Trade (siêu thị, chuỗi) và General Trade (tạp hoá, chợ)."],
-["Big4","Bốn hãng kiểm toán lớn: Deloitte, PwC, EY, KPMG."],
-["ACCA","Chứng chỉ kế toán công chứng Anh quốc, được Big4 đánh giá cao."]
-];
-
 /* ---------- helpers ---------- */
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-let known=new Set(store.get("jobneu-known",[]));
-const saveKnown=()=>store.set("jobneu-known",[...known]);
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const coGroup=d=>{const s=d.sector;if(/Big4/.test(s))return"Big4 – Kiểm toán";if(/Ngân hàng/.test(s))return"Ngân hàng";if(/FMCG|tiêu dùng/.test(s))return"Tiêu dùng – Bán lẻ";if(/Công nghệ|Viễn thông|Thương mại điện tử|Fintech/.test(s))return"Công nghệ – Số";return"Tập đoàn – FDI"};
+const posGroup=d=>d.field;
 
 /* ---------- browse lists ---------- */
 function browser(cfg){
@@ -532,83 +414,90 @@ function browser(cfg){
   chips.innerHTML=groups.map(g=>`<button class="chip" aria-pressed="${g===filter}">${esc(g)}</button>`).join("");
   chips.onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.textContent;[...chips.children].forEach(c=>c.setAttribute("aria-pressed",c===b));render()};
   $(cfg.search).oninput=e=>{q=e.target.value.toLowerCase().trim();render()};
+  $(cfg.quizBtn).onclick=()=>startQuiz(cfg.kind+"|"+filter);
   function render(){
+    $(cfg.quizBtn).textContent=filter==="Tất cả"?"Làm quiz cả mục này":`Làm quiz nhóm ${filter}`;
     const items=cfg.data.filter(d=>(filter==="Tất cả"||cfg.group(d)===filter)&&(!q||JSON.stringify(d).toLowerCase().includes(q)));
     const list=$(cfg.list);
-    list.innerHTML=items.length?items.map(d=>`<button class="item" role="option" data-id="${d.id}" aria-selected="${d.id===sel}"><span>${esc(d.name)}<small>${esc(cfg.sub(d))}</small></span>${known.has(cfg.key(d))?'<span class="tick" title="Đã nhớ">✓</span>':""}</button>`).join(""):`<p style="padding:14px;margin:0;color:var(--muted)">Không có kết quả. Thử từ khoá khác.</p>`;
+    list.innerHTML=items.length?items.map(d=>`<button class="item" role="option" data-id="${d.id}" aria-selected="${d.id===sel}"><span>${esc(d.name)}<small>${esc(cfg.sub(d))}</small></span></button>`).join(""):`<p style="padding:14px;margin:0;color:var(--muted)">Không có kết quả. Thử từ khoá khác.</p>`;
     if(items.length&&!items.some(d=>d.id===sel))sel=items[0].id;
     list.querySelectorAll(".item").forEach(b=>b.setAttribute("aria-selected",b.dataset.id===sel));
     const d=cfg.data.find(x=>x.id===sel);
     $(cfg.detail).innerHTML=d?cfg.detailHTML(d):"";
-    const kb=$(cfg.detail).querySelector("[data-know]");
-    if(kb)kb.onclick=()=>{const k=cfg.key(d);known.has(k)?known.delete(k):known.add(k);saveKnown();render();fcRender()};
+    const qb=$(cfg.detail).querySelector("[data-quiz]");
+    if(qb)qb.onclick=()=>startQuiz(cfg.kind+"|"+cfg.group(d));
   }
   $(cfg.list).onclick=e=>{const b=e.target.closest(".item");if(!b)return;sel=b.dataset.id;render();if(innerWidth<760)$(cfg.detail).scrollIntoView({behavior:"smooth",block:"start"})};
-  return render;
+  render();
 }
 const lst=a=>`<ul class="clean">${a.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
 const pills=a=>`<div class="pills">${a.map(x=>`<span class="pill">${esc(x)}</span>`).join("")}</div>`;
-const knowBtn=k=>`<div class="row-actions"><button class="btn ${known.has(k)?"ghost":""}" data-know>${known.has(k)?"Bỏ đánh dấu đã nhớ":"Đánh dấu đã nhớ"}</button></div>`;
+const quizBtn=g=>`<div class="row-actions"><button class="btn ghost" data-quiz>Làm quiz nhóm ${esc(g)}</button></div>`;
 
-const renderPos=browser({data:POS,group:d=>d.field,chips:"#posChips",search:"#posSearch",list:"#posList",detail:"#posDetail",sub:d=>d.en,key:d=>"pos:"+d.id,
+browser({kind:"pos",data:POS,group:posGroup,chips:"#posChips",search:"#posSearch",quizBtn:"#posQuiz",list:"#posList",detail:"#posDetail",sub:d=>d.en,
 detailHTML:d=>`<span class="tag">${esc(d.field)}</span><h2>${esc(d.name)}</h2><p class="en">${esc(d.en)}</p><p style="margin:0">${esc(d.desc)}</p>
 <div class="grid2"><div><p class="lbl">Công việc hằng ngày</p>${lst(d.tasks)}</div><div><p class="lbl">Kỹ năng cần có</p>${lst(d.skills)}</div>
 <div><p class="lbl">Công cụ</p>${pills(d.tools)}</div><div><p class="lbl">Ngành học phù hợp</p>${pills(d.majors)}</div></div>
 <div style="margin-top:16px"><p class="lbl">Lộ trình thăng tiến</p><div class="ladder">${d.ladder.map(esc).map(x=>`<span>${x}</span>`).join("<i>→</i>")}</div></div>
 <div style="margin-top:16px"><p class="lbl">Câu hỏi phỏng vấn hay gặp</p>${lst(d.interview)}</div>
-<div class="tip"><b>Khi tư vấn:</b> ${esc(d.tip)}</div>${knowBtn("pos:"+d.id)}`});
+<div class="tip"><b>Khi tư vấn:</b> ${esc(d.tip)}</div>${quizBtn(d.field)}`});
 
-const renderCo=browser({data:CO,group:d=>d.sector.split(" – ")[0].replace("Ngân hàng nhà nước","Ngân hàng").replace("Ngân hàng TMCP tư nhân","Ngân hàng"),chips:"#coChips",search:"#coSearch",list:"#coList",detail:"#coDetail",sub:d=>d.sector,key:d=>"co:"+d.id,
+browser({kind:"co",data:CO,group:coGroup,chips:"#coChips",search:"#coSearch",quizBtn:"#coQuiz",list:"#coList",detail:"#coDetail",sub:d=>d.sector,
 detailHTML:d=>`<span class="tag">${esc(d.sector)}</span><h2>${esc(d.name)}</h2><p class="en">${esc(d.origin)}</p><p style="margin:0">${esc(d.about)}</p>
 <div class="grid2"><div><p class="lbl">Vị trí / chương trình hay tuyển</p>${lst(d.roles)}</div><div><p class="lbl">Quy trình tuyển</p><p style="margin:0">${esc(d.process)}</p></div></div>
-<div class="tip"><b>Lưu ý:</b> ${esc(d.tip)}</div>${knowBtn("co:"+d.id)}`});
-
-$("#glBody").innerHTML=GL.map(([t,m])=>`<tr><td>${esc(t)}</td><td>${esc(m)}</td></tr>`).join("");
-
-/* ---------- flashcards ---------- */
-const DECKS={
-  pos:()=>POS.map(d=>({k:"pos:"+d.id,f:`${d.name}\n(${d.en})`,b:`${d.desc}\n\nKỹ năng: ${d.skills.join(", ")}\nCông cụ: ${d.tools.join(", ")}\nLộ trình: ${d.ladder.join(" → ")}`})),
-  co:()=>CO.map(d=>({k:"co:"+d.id,f:d.name,b:`${d.sector} · ${d.origin}\n\n${d.about}\n\nHay tuyển: ${d.roles.join("; ")}\nQuy trình: ${d.process}`})),
-  gl:()=>GL.map(([t,m])=>({k:"gl:"+t,f:t,b:m}))
-};
-let deck=[],fi=0,flipped=false;
-function buildDeck(shuf){let d=DECKS[$("#deckSel").value]();if($("#hideKnown").checked)d=d.filter(c=>!known.has(c.k));deck=shuf?shuffle(d):d;fi=0;fcRender()}
-function fcRender(){
-  const all=DECKS[$("#deckSel").value](),kn=all.filter(c=>known.has(c.k)).length;
-  $("#fcKnown").textContent=`Đã nhớ ${kn} / ${all.length}`;$("#fcBar").style.width=(all.length?kn/all.length*100:0)+"%";
-  if(!deck.length){$("#fcFront").textContent="Bạn đã nhớ hết bộ thẻ này.";$("#fcBack").hidden=true;$("#fcCount").textContent="0 / 0";return}
-  fi=Math.min(fi,deck.length-1);const c=deck[fi];
-  $("#fcCount").textContent=`${fi+1} / ${deck.length}`;
-  $("#fcFront").textContent=c.f;$("#fcFront").style.whiteSpace="pre-line";$("#fcBack").textContent=c.b;
-  $("#fcFront").hidden=flipped;$("#fcBack").hidden=!flipped;
-  $("#fcKnow").textContent=known.has(c.k)?"Bỏ đã nhớ":"Đã nhớ";
-}
-const flip=()=>{flipped=!flipped;fcRender()};
-$("#fcCard").onclick=flip;$("#fcFlip").onclick=flip;
-$("#fcCard").onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}};
-$("#fcNext").onclick=()=>{if(deck.length){fi=(fi+1)%deck.length;flipped=false;fcRender()}};
-$("#fcPrev").onclick=()=>{if(deck.length){fi=(fi-1+deck.length)%deck.length;flipped=false;fcRender()}};
-$("#fcShuffle").onclick=()=>{flipped=false;buildDeck(true)};
-$("#fcKnow").onclick=()=>{const c=deck[fi];if(!c)return;known.has(c.k)?known.delete(c.k):known.add(c.k);saveKnown();
-  if($("#hideKnown").checked&&known.has(c.k)){deck.splice(fi,1)}else{fi=(fi+1)%deck.length}flipped=false;fcRender();renderPos();renderCo()};
-$("#deckSel").onchange=()=>{flipped=false;buildDeck(false)};$("#hideKnown").onchange=()=>{flipped=false;buildDeck(false)};
+<div class="tip"><b>Lưu ý:</b> ${esc(d.tip)}</div>${quizBtn(coGroup(d))}`});
 
 /* ---------- quiz ---------- */
-function pickOthers(pool,right,n){return shuffle([...new Set(pool.filter(x=>x!==right))]).slice(0,n)}
-const GEN=[
-  ()=>{const c=shuffle(CO)[0];return{q:`${c.name} thuộc nhóm ngành nào?`,a:c.sector,o:pickOthers(CO.map(x=>x.sector),c.sector,3),e:c.about}},
-  ()=>{const p=shuffle(POS)[0];return{q:`Vị trí “${p.en}” trong tiếng Việt là gì?`,a:p.name,o:pickOthers(POS.map(x=>x.name),p.name,3),e:p.desc}},
-  ()=>{const p=shuffle(POS)[0],t=shuffle(p.tasks)[0];return{q:`Công việc “${t}” là nhiệm vụ hằng ngày của vị trí nào?`,a:p.name,o:pickOthers(POS.filter(x=>!x.tasks.includes(t)).map(x=>x.name),p.name,3),e:`${p.name}: ${p.tasks.join("; ")}.`}},
-  ()=>{const p=shuffle(POS.filter(x=>x.majors.length<4))[0],m=p.majors[0];const others=POS.filter(x=>!x.majors.includes(m)).map(x=>x.name);return{q:`Sinh viên ngành ${m} phù hợp nhất với vị trí nào dưới đây?`,a:p.name,o:pickOthers(others,p.name,3),e:`Ngành phù hợp với ${p.name}: ${p.majors.join(", ")}.`}},
-  ()=>{const [t,m]=shuffle(GL)[0];return{q:`Thuật ngữ nào có nghĩa: “${m}”`,a:t,o:pickOthers(GL.map(x=>x[0]),t,3),e:`${t}: ${m}`}},
-  ()=>{const c=shuffle(CO.filter(x=>x.origin))[0];return{q:`${c.name} có nguồn gốc / thông tin thành lập nào?`,a:c.origin,o:pickOthers(CO.map(x=>x.origin),c.origin,3),e:c.about}},
-  ()=>{const p=shuffle(POS)[0];return{q:`Lộ trình nào là của vị trí ${p.name}?`,a:p.ladder.join(" → "),o:pickOthers(POS.map(x=>x.ladder.join(" → ")),p.ladder.join(" → "),3),e:p.tip}}
+// distractors: prefer items from the same group (harder), then the rest
+function pick(right,same,all,n=3){const out=[];for(const x of [...shuffle(same),...shuffle(all)]){if(x&&x!==right&&!out.includes(x))out.push(x);if(out.length===n)break}return out}
+function posQuestions(p){
+  const same=POS.filter(x=>x.field===p.field&&x!==p),qs=[],names=a=>a.map(x=>x.name);
+  qs.push({q:`Vị trí “${p.en}” trong tiếng Việt là gì?`,a:p.name,o:pick(p.name,names(same),names(POS)),e:p.desc});
+  const t=rnd(p.tasks),noT=POS.filter(x=>!x.tasks.includes(t));
+  qs.push({q:`“${t}” là công việc hằng ngày của vị trí nào?`,a:p.name,o:pick(p.name,names(noT.filter(x=>x.field===p.field)),names(noT)),e:`${p.name}: ${p.tasks.join("; ")}.`});
+  qs.push({q:`Mô tả sau nói về vị trí nào?\n“${p.desc}”`,a:p.name,o:pick(p.name,names(same),names(POS)),e:p.tip});
+  const iq=rnd(p.interview);
+  qs.push({q:`Câu phỏng vấn “${iq}” thường gặp khi ứng tuyển vị trí nào?`,a:p.name,o:pick(p.name,names(same),names(POS)),e:`Câu hỏi hay gặp cho ${p.name}: ${p.interview.join(" / ")}`});
+  const L=x=>x.ladder.join(" → ");
+  qs.push({q:`Lộ trình thăng tiến nào là của vị trí ${p.name}?`,a:L(p),o:pick(L(p),same.map(L),POS.map(L)),e:p.tip});
+  if(!p.tools[0].startsWith("Tuỳ")){const tool=rnd(p.tools),pool=POS.filter(x=>!x.tools.includes(tool));
+    qs.push({q:`Công cụ nào thường dùng ở vị trí ${p.name}?`,a:tool,o:pick(tool,[],pool.flatMap(x=>x.tools).filter(x=>!p.tools.includes(x)&&!x.startsWith("Tuỳ"))),e:`Công cụ của ${p.name}: ${p.tools.join(", ")}.`})}
+  if(p.majors.length>1||!p.majors[0].startsWith("Mọi")){const m=p.majors[0];
+    qs.push({q:`Ngành học nào phù hợp nhất với vị trí ${p.name}?`,a:m,o:pick(m,[],POS.flatMap(x=>x.majors).filter(x=>!p.majors.includes(x)&&!x.startsWith("Mọi"))),e:`Ngành phù hợp: ${p.majors.join(", ")}.`})}
+  return qs;
+}
+function coQuestions(c){
+  const g=coGroup(c),same=CO.filter(x=>coGroup(x)===g&&x!==c),qs=[],names=a=>a.map(x=>x.name);
+  const key=c.name.split(" ")[0],mask=s=>s.split(key).join("[…]");
+  qs.push({q:`${c.name} có nguồn gốc / thông tin thành lập nào?`,a:c.origin,o:pick(c.origin,same.map(x=>x.origin),CO.map(x=>x.origin)),e:c.about});
+  qs.push({q:`Mô tả sau là của công ty nào?\n“${mask(c.about)}”`,a:c.name,o:pick(c.name,names(same),names(CO)),e:c.about});
+  const r=rnd(c.roles),noR=CO.filter(x=>!x.roles.includes(r));
+  qs.push({q:`“${mask(r)}” là vị trí / chương trình tuyển dụng của công ty nào?`,a:c.name,o:pick(c.name,names(noR.filter(x=>coGroup(x)===g)),names(noR)),e:`${c.name} hay tuyển: ${c.roles.join("; ")}.`});
+  qs.push({q:`${c.name} thuộc nhóm ngành nào?`,a:c.sector,o:pick(c.sector,[],CO.filter(x=>coGroup(x)!==g).map(x=>x.sector)),e:c.about});
+  qs.push({q:`Quy trình tuyển của ${c.name} thường như thế nào?`,a:c.process,o:pick(c.process,[],CO.filter(x=>coGroup(x)!==g).map(x=>x.process)),e:c.tip});
+  return qs;
+}
+const QUIZ_SETS=[
+  {id:"pos|Tất cả",label:"Tất cả vị trí",kind:"pos",items:()=>POS},
+  ...[...new Set(POS.map(posGroup))].map(g=>({id:"pos|"+g,label:g,kind:"pos",items:()=>POS.filter(x=>posGroup(x)===g)})),
+  {id:"co|Tất cả",label:"Tất cả công ty",kind:"co",items:()=>CO},
+  ...[...new Set(CO.map(coGroup))].map(g=>({id:"co|"+g,label:g,kind:"co",items:()=>CO.filter(x=>coGroup(x)===g)}))
 ];
-let qs=[],qi=0,score=0;
-function newQuiz(){qs=[];const seen=new Set();let guard=0;while(qs.length<10&&guard++<200){const q=GEN[Math.floor(Math.random()*GEN.length)]();if(seen.has(q.q)||q.o.length<3)continue;seen.add(q.q);q.opts=shuffle([q.a,...q.o]);qs.push(q)}qi=0;score=0;qRender()}
+$("#qzSet").innerHTML=`<optgroup label="Vị trí công việc">${QUIZ_SETS.filter(s=>s.kind==="pos").map(s=>`<option value="${esc(s.id)}">${esc(s.label)}</option>`).join("")}</optgroup><optgroup label="Công ty">${QUIZ_SETS.filter(s=>s.kind==="co").map(s=>`<option value="${esc(s.id)}">${esc(s.label)}</option>`).join("")}</optgroup>`;
+let qs=[],qi=0,score=0,best=store.get("jobneu-best",{});
+function newQuiz(){
+  const set=QUIZ_SETS.find(s=>s.id===$("#qzSet").value)||QUIZ_SETS[0];
+  const gen=set.kind==="pos"?posQuestions:coQuestions,seen=new Set();
+  qs=shuffle(set.items().flatMap(gen)).filter(q=>q.o.length===3&&!seen.has(q.q)&&seen.add(q.q)).slice(0,10);
+  qs.forEach(q=>q.opts=shuffle([q.a,...q.o]));qi=0;score=0;qRender();
+}
+function bestText(){const b=best[$("#qzSet").value];return b!=null?`Cao nhất ${b}`:""}
 function qRender(){
-  $("#qzScore").textContent=`Đúng ${score}`;$("#qzExp").hidden=true;$("#qzNext").disabled=true;
-  if(qi>=qs.length){$("#qzNum").textContent="Hoàn thành";$("#qzQ").textContent=`Bạn đúng ${score}/${qs.length} câu. ${score>=8?"Rất tốt!":score>=5?"Khá ổn, ôn thêm phần sai nhé.":"Hãy xem lại tab Vị trí và Công ty rồi làm lại."}`;$("#qzOpts").innerHTML="";return}
+  $("#qzScore").textContent=`Đúng ${score}`;$("#qzBest").textContent=bestText();$("#qzExp").hidden=true;$("#qzNext").disabled=true;$("#qzNext").hidden=false;
+  if(qi>=qs.length){const id=$("#qzSet").value,res=`${score}/${qs.length}`;
+    if(best[id]==null||score>parseInt(best[id])){best[id]=res;store.set("jobneu-best",best)}
+    $("#qzBest").textContent=bestText();$("#qzNum").textContent="Hoàn thành";$("#qzNext").hidden=true;
+    const r=score/qs.length;$("#qzQ").textContent=`Bạn đúng ${score}/${qs.length} câu. ${r>=.8?"Rất tốt!":r>=.5?"Khá ổn, xem lại các câu sai rồi làm bộ mới nhé.":"Hãy đọc lại nhóm này ở tab Vị trí hoặc Công ty rồi làm lại."}`;$("#qzOpts").innerHTML="";return}
   const q=qs[qi];$("#qzNum").textContent=`Câu ${qi+1} / ${qs.length}`;$("#qzQ").textContent=q.q;
   $("#qzOpts").innerHTML=q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join("");
 }
@@ -619,15 +508,16 @@ $("#qzOpts").onclick=e=>{const b=e.target.closest(".opt");if(!b||!$("#qzNext").d
   $("#qzNext").textContent=qi===qs.length-1?"Xem kết quả":"Câu tiếp"};
 $("#qzNext").onclick=()=>{qi++;qRender()};
 $("#qzRestart").onclick=newQuiz;
+$("#qzSet").onchange=newQuiz;
+function startQuiz(id){$("#qzSet").value=id;newQuiz();location.hash="quiz";scrollTo(0,0)}
 
 /* ---------- routing ---------- */
-const VIEWS=["vi-tri","cong-ty","on-tap","nghiep-vu"];
+const VIEWS=["vi-tri","cong-ty","quiz"];
 function route(){const v=VIEWS.includes(location.hash.slice(1))?location.hash.slice(1):"vi-tri";
   VIEWS.forEach(x=>{$("#v-"+x).hidden=x!==v});
-  document.querySelectorAll("nav.tabs a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.view===v)||a.dataset.view===v&&a.setAttribute("aria-current","page"));
   document.querySelectorAll("nav.tabs a").forEach(a=>{if(a.dataset.view===v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});}
 addEventListener("hashchange",route);
-renderPos();renderCo();buildDeck(false);newQuiz();route();
+newQuiz();route();
 </script>
 
 </html>
