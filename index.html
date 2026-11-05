@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<title>Sổ tay Tuyển dụng Job NEU</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: sticky tab bar over a single reading column; list + detail split on wide screens */
+:root{
+  --bg:#f5f6f3; --surface:#ffffff; --ink:#17231f; --muted:#5b6b65; --line:#dde3df;
+  --accent:#0f6b5a; --accent-soft:#e1f0eb; --gold:#b7791f; --gold-soft:#fbf1df;
+  --ok:#1f7a3a; --bad:#b4372b;
+  --f-body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#101614; --surface:#18201d; --ink:#e7eeeb; --muted:#9aaba4; --line:#2a3531;
+  --accent:#4fc2a6; --accent-soft:#183a32; --gold:#e3b057; --gold-soft:#3a2f1a;
+  --ok:#5fcf7f; --bad:#f08273; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101614; --surface:#18201d; --ink:#e7eeeb; --muted:#9aaba4; --line:#2a3531;
+  --accent:#4fc2a6; --accent-soft:#183a32; --gold:#e3b057; --gold-soft:#3a2f1a;
+  --ok:#5fcf7f; --bad:#f08273; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{padding-block:28px 18px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+h1{font-size:clamp(26px,4.4vw,38px);line-height:1.15;margin:.2em 0 .3em;font-weight:800;text-wrap:balance;letter-spacing:-.01em}
+.lead{color:var(--muted);max-width:66ch;margin:0}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{flex:none;padding:12px 14px;color:var(--muted);text-decoration:none;font-weight:600;border-bottom:3px solid transparent;white-space:nowrap}
+nav.tabs a[aria-current="page"]{color:var(--accent);border-color:var(--accent)}
+nav.tabs a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+main{padding-block:24px 60px}
+h2{font-size:22px;margin:0 0 4px;text-wrap:balance}
+h3{font-size:17px;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 18px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+input[type=search],select{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);min-width:0}
+input[type=search]{flex:1 1 220px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:13px;padding:5px 11px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.split{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
+@media (max-width:760px){.split{grid-template-columns:1fr}}
+.list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden;max-height:70vh;overflow-y:auto}
+@media (max-width:760px){.list{max-height:none}}
+.item{all:unset;display:flex;justify-content:space-between;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.item:last-child{border-bottom:0}
+.item:hover{background:var(--accent-soft)}
+.item[aria-selected="true"]{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.item small{display:block;color:var(--muted);font-size:12.5px}
+.item .tick{color:var(--ok);font-weight:700}
+.detail{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;min-width:0}
+.detail .tag{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:2px 8px;border-radius:5px;background:var(--gold-soft);color:var(--gold);margin-right:6px}
+.detail h2{margin-top:8px}
+.en{color:var(--muted);font-style:italic;margin:0 0 12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:16px}
+.grid2>div{min-width:0}
+.lbl{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+ul.clean{margin:0;padding-left:18px}
+ul.clean li{margin-bottom:4px}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:13px;padding:3px 9px;border-radius:6px;background:var(--accent-soft);color:var(--ink)}
+.ladder{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13.5px}
+.ladder span{padding:3px 9px;border:1px solid var(--line);border-radius:6px}
+.ladder i{color:var(--muted);font-style:normal}
+.tip{margin-top:18px;padding:12px 14px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 8px 8px 0}
+.tip b{color:var(--gold)}
+.row-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.btn{font:inherit;font-weight:600;font-size:14px;padding:9px 16px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--surface);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.5;cursor:default}
+.note{font-size:13px;color:var(--muted);margin-top:14px}
+/* flashcard */
+.study{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.study{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;min-width:0}
+.card{min-height:220px;border:1px dashed var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;justify-content:center;cursor:pointer;background:var(--bg)}
+.card .front{font-size:20px;font-weight:700;text-wrap:balance}
+.card .back{white-space:pre-line}
+.meta{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-bottom:10px;font-variant-numeric:tabular-nums}
+.progress{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:12px}
+.progress>i{display:block;height:100%;background:var(--accent);width:0}
+.q{font-weight:600;font-size:16.5px;margin:0 0 12px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{all:unset;padding:10px 14px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--bg)}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--surface))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--surface))}
+.explain{margin-top:12px;font-size:14px;color:var(--muted)}
+/* playbook */
+.pb{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.pb .panel ol,.pb .panel ul{margin:0;padding-left:20px}
+.pb .panel li{margin-bottom:6px}
+.flag{color:var(--bad);font-weight:700}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface);margin-top:18px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td:first-child{font-weight:700;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+footer{color:var(--muted);font-size:13px;padding-block:0 40px}
+@media (prefers-reduced-motion:no-preference){.card,.opt,.item{transition:background .15s,border-color .15s}}
+</style>
+
+<header class="top wrap">
+  <div class="eyebrow">Job NEU · Sổ tay nghiệp vụ</div>
+  <h1>Ôn tập vị trí công việc &amp; nhà tuyển dụng</h1>
+  <p class="lead">Tra cứu nhanh các vị trí sinh viên kinh tế hay ứng tuyển, hồ sơ các nhà tuyển dụng lớn, rồi tự kiểm tra bằng thẻ ghi nhớ và câu hỏi trắc nghiệm. Tab cuối dành riêng cho công việc của cán bộ Job NEU: làm việc với doanh nghiệp, kiểm duyệt tin, tư vấn sinh viên.</p>
+</header>
+
+<nav class="tabs" aria-label="Các phần">
+  <div class="wrap">
+    <a href="#vi-tri" data-view="vi-tri">Vị trí công việc</a>
+    <a href="#cong-ty" data-view="cong-ty">Công ty</a>
+    <a href="#on-tap" data-view="on-tap">Ôn tập</a>
+    <a href="#nghiep-vu" data-view="nghiep-vu">Nghiệp vụ Job NEU</a>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="v-vi-tri">
+    <h2>Vị trí công việc</h2>
+    <p class="sub">Mỗi vị trí gồm việc làm hằng ngày, kỹ năng, công cụ, lộ trình thăng tiến, ngành học phù hợp và câu hỏi phỏng vấn hay gặp.</p>
+    <div class="toolbar">
+      <input type="search" id="posSearch" placeholder="Tìm vị trí, kỹ năng, công cụ…" aria-label="Tìm vị trí">
+    </div>
+    <div class="chips" id="posChips" style="margin-bottom:16px"></div>
+    <div class="split">
+      <div class="list" id="posList" role="listbox" aria-label="Danh sách vị trí"></div>
+      <article class="detail" id="posDetail"></article>
+    </div>
+  </section>
+
+  <section id="v-cong-ty" hidden>
+    <h2>Nhà tuyển dụng</h2>
+    <p class="sub">Hồ sơ ngắn của các doanh nghiệp tuyển nhiều sinh viên kinh tế: ngành, nguồn gốc, vị trí hay tuyển, quy trình tuyển và điểm cần biết khi tư vấn.</p>
+    <div class="toolbar">
+      <input type="search" id="coSearch" placeholder="Tìm công ty, ngành, chương trình…" aria-label="Tìm công ty">
+    </div>
+    <div class="chips" id="coChips" style="margin-bottom:16px"></div>
+    <div class="split">
+      <div class="list" id="coList" role="listbox" aria-label="Danh sách công ty"></div>
+      <article class="detail" id="coDetail"></article>
+    </div>
+  </section>
+
+  <section id="v-on-tap" hidden>
+    <h2>Ôn tập</h2>
+    <p class="sub">Thẻ ghi nhớ để học thuộc, trắc nghiệm để tự kiểm tra. Thẻ bạn đánh dấu “Đã nhớ” được lưu trên trình duyệt này.</p>
+    <div class="study">
+      <div class="panel">
+        <h3>Thẻ ghi nhớ</h3>
+        <div class="toolbar">
+          <select id="deckSel" aria-label="Chọn bộ thẻ">
+            <option value="pos">Vị trí công việc</option>
+            <option value="co">Công ty</option>
+            <option value="gl">Thuật ngữ tuyển dụng</option>
+          </select>
+          <label style="display:flex;align-items:center;gap:6px;font-size:14px"><input type="checkbox" id="hideKnown"> Ẩn thẻ đã nhớ</label>
+        </div>
+        <div class="meta"><span id="fcCount">1 / 1</span><span id="fcKnown">Đã nhớ 0</span></div>
+        <div class="card" id="fcCard" tabindex="0" role="button" aria-label="Lật thẻ">
+          <div class="front" id="fcFront"></div>
+          <div class="back" id="fcBack" hidden></div>
+        </div>
+        <div class="progress"><i id="fcBar"></i></div>
+        <div class="row-actions">
+          <button class="btn ghost" id="fcPrev">Trước</button>
+          <button class="btn ghost" id="fcFlip">Lật thẻ</button>
+          <button class="btn" id="fcKnow">Đã nhớ</button>
+          <button class="btn ghost" id="fcNext">Tiếp</button>
+          <button class="btn ghost" id="fcShuffle">Xáo thẻ</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Trắc nghiệm</h3>
+        <div class="meta"><span id="qzNum">Câu 1 / 10</span><span id="qzScore">Đúng 0</span></div>
+        <p class="q" id="qzQ"></p>
+        <div class="opts" id="qzOpts"></div>
+        <p class="explain" id="qzExp" hidden></p>
+        <div class="row-actions">
+          <button class="btn" id="qzNext" disabled>Câu tiếp</button>
+          <button class="btn ghost" id="qzRestart">Làm bộ mới</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="v-nghiep-vu" hidden>
+    <h2>Nghiệp vụ Job NEU</h2>
+    <p class="sub">Những việc lặp lại hằng ngày của một cổng việc làm trong trường đại học, và cách làm cho tốt.</p>
+    <div class="pb">
+      <div class="panel">
+        <h3>Quy trình làm việc với doanh nghiệp</h3>
+        <ol>
+          <li><b>Tiếp nhận:</b> xác minh tên pháp lý, mã số thuế, website, người liên hệ có email tên miền công ty.</li>
+          <li><b>Phân loại:</b> tập đoàn / doanh nghiệp vừa và nhỏ / startup / đơn vị tuyển dụng trung gian (headhunter).</li>
+          <li><b>Nắm nhu cầu:</b> vị trí, số lượng, ngành học, năm học, thời gian làm việc, hỗ trợ thực tập sinh, có giữ lại sau thực tập không.</li>
+          <li><b>Đăng tin:</b> chuẩn hoá tiêu đề, JD, yêu cầu, quyền lợi, hạn nộp, kênh nộp.</li>
+          <li><b>Kết nối:</b> gợi ý hình thức phù hợp: đăng tin, workshop, tham quan doanh nghiệp, ngày hội việc làm, học bổng.</li>
+          <li><b>Theo dõi:</b> số lượt ứng tuyển, số sinh viên được nhận, phản hồi của sinh viên về doanh nghiệp.</li>
+          <li><b>Duy trì:</b> cảm ơn, gửi báo cáo kết quả, mời tham gia sự kiện kỳ sau.</li>
+        </ol>
+      </div>
+      <div class="panel">
+        <h3>Dấu hiệu tin tuyển dụng đáng ngờ</h3>
+        <ul>
+          <li><span class="flag">Thu phí</span> đào tạo, đồng phục, đặt cọc, “phí hồ sơ” trước khi nhận việc.</li>
+          <li><span class="flag">Lương cao bất thường</span> so với yêu cầu, “việc nhẹ lương cao”, làm online nhận nhiệm vụ.</li>
+          <li><span class="flag">Không rõ danh tính:</span> không có tên công ty, địa chỉ, chỉ liên hệ qua Zalo/Telegram cá nhân.</li>
+          <li><span class="flag">Đòi thông tin nhạy cảm sớm:</span> ảnh CCCD hai mặt, tài khoản ngân hàng, mã OTP.</li>
+          <li><span class="flag">Mô tả mơ hồ:</span> không nêu việc cụ thể, hứa “thăng tiến ngay”, tuyển số lượng rất lớn quanh năm.</li>
+          <li><span class="flag">Đa cấp trá hình:</span> thu nhập chủ yếu từ việc kéo thêm người.</li>
+        </ul>
+        <p class="note">Gặp một trong các dấu hiệu trên thì tạm giữ tin, yêu cầu doanh nghiệp bổ sung giấy tờ trước khi duyệt.</p>
+      </div>
+      <div class="panel">
+        <h3>Tư vấn sinh viên theo năm học</h3>
+        <ul>
+          <li><b>Năm 1–2:</b> khám phá nghề qua workshop, câu lạc bộ, việc bán thời gian; làm CV đầu tiên.</li>
+          <li><b>Năm 3:</b> chọn 1–2 hướng nghề, thực tập hè, ôn bài test năng lực, luyện tiếng Anh phỏng vấn.</li>
+          <li><b>Năm 4:</b> rải hồ sơ theo mùa tuyển (Big4 và ngân hàng thường tuyển mạnh nửa cuối năm, chương trình Management Trainee thường mở đầu năm hoặc giữa năm), hoàn thiện LinkedIn.</li>
+          <li><b>Mới tốt nghiệp:</b> so sánh offer, hiểu lương gross/net, thời gian thử việc, bảo hiểm.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Câu hỏi nên hỏi doanh nghiệp</h3>
+        <ul>
+          <li>Thực tập sinh làm việc gì trong tuần đầu tiên? Ai hướng dẫn?</li>
+          <li>Tỷ lệ thực tập sinh được giữ lại năm trước là bao nhiêu?</li>
+          <li>Vòng tuyển gồm những bước nào, mất bao lâu?</li>
+          <li>Có hỗ trợ sinh viên làm bán thời gian theo lịch học không?</li>
+          <li>Doanh nghiệp muốn tuyển sinh viên ngành nào nhiều nhất trong năm tới?</li>
+        </ul>
+      </div>
+    </div>
+    <h3 style="margin-top:26px">Thuật ngữ tuyển dụng</h3>
+    <div class="tablewrap"><table><thead><tr><th>Thuật ngữ</th><th>Nghĩa</th></tr></thead><tbody id="glBody"></tbody></table></div>
+  </section>
+</main>
+
+<footer class="wrap">Thông tin công ty tổng hợp từ nguồn công khai đến năm 2026 để ôn tập. Tên chương trình, vòng tuyển và thời điểm tuyển thay đổi theo năm, hãy kiểm tra lại trên trang tuyển dụng chính thức trước khi tư vấn cho sinh viên.</footer>
+
+<script>
+const POS=[
+{id:"audit",name:"Kiểm toán viên",en:"Audit Associate / Auditor",field:"Kế toán – Kiểm toán",
+desc:"Kiểm tra báo cáo tài chính của khách hàng để đưa ra ý kiến báo cáo có trung thực, hợp lý hay không. Làm theo mùa, cao điểm từ tháng 12 đến tháng 3 (mùa kiểm toán cuối năm).",
+tasks:["Thu thập, đối chiếu chứng từ, sổ sách","Kiểm kê tiền, hàng tồn kho tại khách hàng","Gửi thư xác nhận công nợ, số dư ngân hàng","Lập giấy tờ làm việc (working paper)","Đi công tác tại văn phòng khách hàng"],
+skills:["Chuẩn mực kế toán VAS/IFRS","Cẩn thận, hoài nghi nghề nghiệp","Chịu áp lực, làm thêm giờ mùa cao điểm","Tiếng Anh đọc hiểu tốt"],
+tools:["Excel","Phần mềm kiểm toán nội bộ của hãng"],
+ladder:["Intern","Associate / Staff","Senior","Supervisor","Manager","Partner"],
+majors:["Kiểm toán","Kế toán","Tài chính – Ngân hàng"],
+interview:["Phân biệt kế toán và kiểm toán?","Bạn xử lý thế nào khi số liệu không khớp?","Vì sao chọn Big4 mà không phải ngân hàng?"],
+tip:"Chứng chỉ ACCA, ICAEW, CPA là lợi thế lớn. Sinh viên nên thi các môn ACCA F-level ngay từ năm 2–3."},
+{id:"acct",name:"Kế toán tổng hợp",en:"General Accountant",field:"Kế toán – Kiểm toán",
+desc:"Ghi nhận nghiệp vụ, khoá sổ, lập báo cáo tài chính và báo cáo thuế cho doanh nghiệp. Vị trí ổn định, cần ở mọi loại doanh nghiệp.",
+tasks:["Hạch toán nghiệp vụ hằng ngày","Đối chiếu công nợ, ngân hàng","Kê khai thuế GTGT, TNDN, TNCN","Khoá sổ tháng, quý, năm","Lập báo cáo tài chính"],
+skills:["Luật thuế Việt Nam","Chuẩn mực kế toán VAS","Tỉ mỉ, đúng hạn"],
+tools:["MISA","Fast","SAP / Oracle (doanh nghiệp lớn)","Excel"],
+ladder:["Kế toán viên","Kế toán tổng hợp","Kế toán trưởng","Giám đốc tài chính (CFO)"],
+majors:["Kế toán","Kiểm toán"],
+interview:["Quy trình khoá sổ cuối tháng?","Hạch toán một nghiệp vụ mua hàng trả chậm?","Hạn nộp tờ khai thuế GTGT theo quý?"],
+tip:"Chứng chỉ kế toán trưởng và kinh nghiệm phần mềm MISA giúp sinh viên dễ được nhận ở doanh nghiệp vừa và nhỏ."},
+{id:"rm",name:"Chuyên viên Quan hệ khách hàng",en:"Relationship Manager (RM)",field:"Tài chính – Ngân hàng",
+desc:"Tìm kiếm và chăm sóc khách hàng cá nhân hoặc doanh nghiệp của ngân hàng: bán sản phẩm tín dụng, huy động vốn, thẻ, bảo hiểm. Thu nhập gắn với chỉ tiêu (KPI).",
+tasks:["Tìm khách hàng mới, gặp gỡ, tư vấn","Thẩm định sơ bộ hồ sơ vay","Theo dõi khoản vay, nhắc nợ","Bán chéo sản phẩm","Báo cáo chỉ tiêu tuần, tháng"],
+skills:["Giao tiếp, thuyết phục","Đọc báo cáo tài chính","Chịu áp lực chỉ tiêu","Mạng lưới quan hệ"],
+tools:["Core banking / CRM nội bộ","Excel"],
+ladder:["RM tập sự","RM","Senior RM","Trưởng nhóm","Giám đốc chi nhánh"],
+majors:["Tài chính – Ngân hàng","Quản trị kinh doanh","Marketing"],
+interview:["Bạn sẽ tìm khách hàng đầu tiên như thế nào?","Phân tích một bộ báo cáo tài chính đơn giản","Nếu không đạt chỉ tiêu tháng thì sao?"],
+tip:"Phù hợp sinh viên năng động, thích kinh doanh. Nhắc sinh viên hỏi rõ cơ chế lương cứng và lương theo chỉ tiêu."},
+{id:"teller",name:"Giao dịch viên",en:"Teller / Customer Service Officer",field:"Tài chính – Ngân hàng",
+desc:"Thực hiện giao dịch tại quầy: gửi rút tiền, chuyển khoản, mở tài khoản, phát hành thẻ. Thường là điểm vào nghề của sinh viên mới ra trường ở ngân hàng.",
+tasks:["Giao dịch tiền mặt, chuyển khoản","Mở tài khoản, đăng ký ngân hàng số","Kiểm đếm, cân quỹ cuối ngày","Tư vấn sản phẩm cơ bản"],
+skills:["Chính xác, cẩn thận với tiền","Thái độ phục vụ","Ngoại hình, giọng nói (nhiều ngân hàng yêu cầu)"],
+tools:["Core banking"],
+ladder:["Giao dịch viên","Kiểm soát viên","Trưởng phòng giao dịch"],
+majors:["Tài chính – Ngân hàng","Kế toán"],
+interview:["Xử lý khách hàng nóng nảy tại quầy?","Kể tên 3 sản phẩm của ngân hàng chúng tôi"],
+tip:"Ngân hàng nhà nước thường thi viết (kiến thức nghiệp vụ, tiếng Anh, tư duy) trước khi phỏng vấn, sinh viên cần ôn đề."},
+{id:"fa",name:"Chuyên viên Phân tích tài chính",en:"Financial Analyst / FP&A",field:"Tài chính – Ngân hàng",
+desc:"Phân tích số liệu tài chính để hỗ trợ ra quyết định: lập ngân sách, dự báo, đánh giá hiệu quả. Có ở doanh nghiệp (FP&A), công ty chứng khoán, quỹ đầu tư.",
+tasks:["Lập ngân sách, dự báo doanh thu chi phí","Phân tích chênh lệch thực tế và kế hoạch","Xây dựng mô hình định giá (DCF)","Viết báo cáo phân tích ngành, cổ phiếu"],
+skills:["Mô hình tài chính","Kế toán tài chính","Tư duy phân tích","Trình bày số liệu"],
+tools:["Excel nâng cao","PowerPoint","Power BI","Bloomberg / FiinPro (tuỳ nơi)"],
+ladder:["Analyst","Senior Analyst","Manager","Head of FP&A / Giám đốc tài chính"],
+majors:["Tài chính – Ngân hàng","Đầu tư","Toán kinh tế"],
+interview:["Ba báo cáo tài chính liên kết với nhau thế nào?","Định giá một công ty bằng cách nào?","Nếu khấu hao tăng 10 thì các báo cáo thay đổi ra sao?"],
+tip:"Chứng chỉ CFA (Level 1) và bài dự thi phân tích cổ phiếu từ các cuộc thi sinh viên giúp hồ sơ nổi bật."},
+{id:"credit",name:"Chuyên viên Thẩm định tín dụng / Rủi ro",en:"Credit / Risk Analyst",field:"Tài chính – Ngân hàng",
+desc:"Đánh giá khả năng trả nợ của khách hàng vay và theo dõi rủi ro danh mục. Là bộ phận kiểm soát độc lập với khối kinh doanh.",
+tasks:["Thẩm định hồ sơ vay, phương án kinh doanh","Đánh giá tài sản bảo đảm","Chấm điểm tín dụng","Theo dõi nợ xấu, cảnh báo sớm"],
+skills:["Phân tích báo cáo tài chính","Quy định tín dụng của NHNN","Thống kê cơ bản"],
+tools:["Excel","SQL / Python (mảng mô hình rủi ro)"],
+ladder:["Chuyên viên","Chuyên viên cao cấp","Trưởng phòng thẩm định / rủi ro"],
+majors:["Tài chính – Ngân hàng","Toán kinh tế","Thống kê"],
+interview:["Các chỉ số đánh giá khả năng thanh toán?","Phân biệt rủi ro tín dụng, thị trường, hoạt động"],
+tip:"Sinh viên Toán kinh tế, Thống kê có lợi thế ở mảng mô hình rủi ro (credit scoring)."},
+{id:"brand",name:"Chuyên viên Thương hiệu",en:"Brand Executive / Assistant Brand Manager",field:"Marketing",
+desc:"Quản lý một thương hiệu hoặc dòng sản phẩm: nghiên cứu người tiêu dùng, lên kế hoạch truyền thông, phối hợp agency. Phổ biến ở các công ty hàng tiêu dùng nhanh (FMCG).",
+tasks:["Phân tích thị phần, hành vi người tiêu dùng","Lên kế hoạch ra mắt sản phẩm, chiến dịch","Làm việc với agency quảng cáo","Theo dõi ngân sách và hiệu quả"],
+skills:["Hiểu người tiêu dùng","Tư duy số liệu","Quản lý dự án","Tiếng Anh tốt"],
+tools:["Excel","PowerPoint","Dữ liệu Nielsen / Kantar"],
+ladder:["Brand Executive / ABM","Brand Manager","Senior BM","Marketing Manager / Director"],
+majors:["Marketing","Quản trị kinh doanh","Truyền thông marketing"],
+interview:["Phân tích một chiến dịch bạn thích","Bạn sẽ tăng thị phần cho sản phẩm X thế nào?","Case: doanh số giảm 15% trong quý"],
+tip:"Các cuộc thi case marketing do FMCG tổ chức là con đường vào nghề phổ biến, nên giới thiệu cho sinh viên năm 2–3."},
+{id:"digital",name:"Chuyên viên Digital Marketing",en:"Digital / Performance Marketing Executive",field:"Marketing",
+desc:"Chạy quảng cáo trên nền tảng số, tối ưu chuyển đổi, quản lý nội dung mạng xã hội và SEO. Kết quả đo được bằng số liệu cụ thể.",
+tasks:["Chạy quảng cáo Facebook, Google, TikTok","Theo dõi CPC, CPA, ROAS","Tối ưu trang đích, SEO","Lên lịch nội dung"],
+skills:["Phân tích số liệu","Viết nội dung","Hiểu thuật toán nền tảng"],
+tools:["Meta Ads Manager","Google Ads","Google Analytics 4","Canva"],
+ladder:["Executive","Specialist","Team Lead","Digital Marketing Manager"],
+majors:["Marketing","Thương mại điện tử","Công nghệ thông tin"],
+interview:["ROAS là gì, tính thế nào?","Chiến dịch có CTR cao nhưng không ra đơn, bạn kiểm tra gì?"],
+tip:"Chứng chỉ miễn phí Google Ads và GA4 là bằng chứng kỹ năng dễ đạt nhất cho sinh viên."},
+{id:"sales",name:"Chuyên viên Kinh doanh / Quản lý khách hàng lớn",en:"Sales Executive / Key Account",field:"Kinh doanh",
+desc:"Bán hàng và giữ quan hệ với khách hàng hoặc kênh phân phối (siêu thị, nhà phân phối, đại lý). Ở FMCG gọi là kênh MT (siêu thị hiện đại) và GT (tạp hoá truyền thống).",
+tasks:["Đàm phán hợp đồng, chiết khấu","Theo dõi doanh số, tồn kho kênh","Triển khai chương trình khuyến mại","Chăm sóc khách hàng lớn"],
+skills:["Đàm phán","Giao tiếp","Hiểu số liệu bán hàng"],
+tools:["CRM (Salesforce, HubSpot…)","Excel","DMS (quản lý phân phối)"],
+ladder:["Sales Executive","Supervisor","Area Sales Manager","Regional / National Sales Manager"],
+majors:["Quản trị kinh doanh","Marketing","Kinh doanh thương mại"],
+interview:["Bán cho tôi cây bút này","Khách hàng đòi chiết khấu cao hơn chính sách thì sao?"],
+tip:"Thu nhập phụ thuộc nhiều vào thưởng doanh số, nên giúp sinh viên đọc kỹ cơ chế lương trong offer."},
+{id:"hr",name:"Chuyên viên Nhân sự / Tuyển dụng",en:"HR Executive / Talent Acquisition",field:"Nhân sự",
+desc:"Tuyển dụng, đào tạo, lương thưởng, quan hệ lao động. Mảng tuyển dụng và Employer Branding là đối tác làm việc trực tiếp với Job NEU.",
+tasks:["Đăng tin, sàng lọc CV, phỏng vấn","Tổ chức ngày hội việc làm, chương trình thực tập","Tính lương, bảo hiểm (mảng C&B)","Xây dựng thương hiệu nhà tuyển dụng"],
+skills:["Bộ luật Lao động","Giao tiếp","Bảo mật thông tin","Tổ chức sự kiện"],
+tools:["ATS (hệ thống quản lý ứng viên)","LinkedIn Recruiter","Excel","Phần mềm HRM"],
+ladder:["HR Executive","HR Specialist","HR Business Partner","HR Manager","HR Director / CHRO"],
+majors:["Kinh tế nguồn nhân lực","Quản trị nhân lực","Quản trị kinh doanh"],
+interview:["Bạn đánh giá ứng viên bằng tiêu chí nào?","Xử lý khi ứng viên từ chối offer phút chót?"],
+tip:"Hiểu vị trí này giúp bạn nói chuyện cùng ngôn ngữ với đối tác tuyển dụng của doanh nghiệp."},
+{id:"scm",name:"Chuyên viên Chuỗi cung ứng / Mua hàng",en:"Supply Chain / Procurement Executive",field:"Logistics",
+desc:"Lập kế hoạch nhu cầu, mua hàng, quản lý kho và vận chuyển để hàng đến đúng nơi, đúng lúc, chi phí thấp nhất.",
+tasks:["Dự báo nhu cầu, lập kế hoạch sản xuất","Tìm và đánh giá nhà cung cấp","Theo dõi tồn kho","Làm chứng từ xuất nhập khẩu"],
+skills:["Tư duy quy trình","Đàm phán","Incoterms, thủ tục hải quan"],
+tools:["SAP / ERP","Excel","Power BI"],
+ladder:["Executive","Planner / Buyer cao cấp","Supply Chain Manager","Head of Supply Chain"],
+majors:["Logistics và quản lý chuỗi cung ứng","Kinh doanh quốc tế","Kinh tế đầu tư"],
+interview:["Incoterms FOB và CIF khác nhau thế nào?","Giảm tồn kho mà không thiếu hàng bằng cách nào?"],
+tip:"Nhu cầu tuyển cao ở FMCG, doanh nghiệp FDI sản xuất (Samsung, LG…) và công ty logistics."},
+{id:"da",name:"Chuyên viên Phân tích dữ liệu",en:"Data Analyst",field:"Dữ liệu – Công nghệ",
+desc:"Biến dữ liệu thành câu trả lời cho câu hỏi kinh doanh: làm dashboard, phân tích hành vi khách hàng, đo hiệu quả chiến dịch.",
+tasks:["Viết truy vấn lấy dữ liệu","Làm sạch, xử lý dữ liệu","Xây dashboard theo dõi chỉ số","Trình bày kết quả cho bộ phận kinh doanh"],
+skills:["SQL","Thống kê","Tư duy kinh doanh","Kể chuyện bằng dữ liệu"],
+tools:["SQL","Python","Power BI / Tableau","Excel"],
+ladder:["Junior DA","Data Analyst","Senior DA","Analytics Manager / Head of Data"],
+majors:["Khoa học dữ liệu","Thống kê","Toán kinh tế","Hệ thống thông tin quản lý"],
+interview:["Viết câu SQL lấy top 5 khách hàng theo doanh thu","Chỉ số DAU giảm 20%, bạn điều tra thế nào?","Phân biệt tương quan và nhân quả"],
+tip:"Portfolio trên GitHub hoặc một dashboard công khai thuyết phục hơn bảng điểm."},
+{id:"ba",name:"Chuyên viên Phân tích nghiệp vụ",en:"Business Analyst (BA)",field:"Dữ liệu – Công nghệ",
+desc:"Cầu nối giữa người dùng nghiệp vụ và đội phát triển phần mềm: thu thập yêu cầu, viết tài liệu, kiểm thử chấp nhận. Tuyển nhiều ở ngân hàng, công ty phần mềm.",
+tasks:["Phỏng vấn người dùng lấy yêu cầu","Viết tài liệu BRD, SRS, user story","Vẽ quy trình nghiệp vụ","Tham gia kiểm thử UAT"],
+skills:["Giao tiếp","Tư duy hệ thống","Hiểu nghiệp vụ (ngân hàng, bán lẻ…)"],
+tools:["Jira","Confluence","Draw.io / Visio","SQL cơ bản","Figma"],
+ladder:["Junior BA","BA","Senior BA","Product Owner / Product Manager"],
+majors:["Hệ thống thông tin quản lý","Công nghệ thông tin","Tài chính – Ngân hàng"],
+interview:["Phân biệt yêu cầu chức năng và phi chức năng","Viết user story cho tính năng chuyển tiền"],
+tip:"Sinh viên kinh tế biết thêm SQL và quy trình Agile/Scrum rất có lợi thế khi ứng tuyển BA ở ngân hàng."},
+{id:"mt",name:"Quản trị viên tập sự",en:"Management Trainee (MT)",field:"Chương trình đặc biệt",
+desc:"Chương trình tuyển sinh viên mới tốt nghiệp xuất sắc, luân chuyển qua nhiều phòng ban trong 1–2 năm để đào tạo thành quản lý. Cạnh tranh rất cao.",
+tasks:["Luân chuyển các bộ phận","Làm dự án thực tế được giao","Được kèm cặp bởi lãnh đạo cấp cao"],
+skills:["Lãnh đạo","Học nhanh","Tư duy chiến lược","Tiếng Anh thành thạo"],
+tools:["Tuỳ phòng ban luân chuyển"],
+ladder:["Management Trainee","Quản lý cấp trung (sau 1–2 năm)","Quản lý cấp cao"],
+majors:["Mọi ngành, ưu tiên thành tích học tập và hoạt động nổi bật"],
+interview:["Kể về lần bạn dẫn dắt một nhóm vượt khó","Giải một case kinh doanh theo nhóm (assessment centre)"],
+tip:"Vòng tuyển thường dài: hồ sơ, bài test online, video phỏng vấn, assessment centre, phỏng vấn lãnh đạo. Nên giúp sinh viên chuẩn bị sớm 3–6 tháng."},
+{id:"consult",name:"Chuyên viên Tư vấn",en:"Consultant / Business Analyst (tư vấn)",field:"Tư vấn",
+desc:"Giải quyết vấn đề cho doanh nghiệp khách hàng: chiến lược, vận hành, chuyển đổi số, tài chính. Có ở Big4 (mảng Consulting/Advisory) và các hãng tư vấn chiến lược.",
+tasks:["Nghiên cứu thị trường, đối thủ","Phân tích dữ liệu khách hàng","Làm slide đề xuất","Trình bày với ban lãnh đạo khách hàng"],
+skills:["Giải case (cấu trúc vấn đề)","Excel, PowerPoint","Viết và trình bày"],
+tools:["Excel","PowerPoint","Think-cell"],
+ladder:["Analyst","Consultant","Senior Consultant","Manager","Partner"],
+majors:["Quản trị kinh doanh","Kinh tế","Tài chính – Ngân hàng"],
+interview:["Ước tính số ly cà phê bán ở Hà Nội mỗi ngày","Case: lợi nhuận một chuỗi bán lẻ giảm"],
+tip:"Bài phỏng vấn case là vòng khó nhất; nhóm luyện case trong câu lạc bộ là cách chuẩn bị hiệu quả."}
+];
+
+const CO=[
+{id:"deloitte",name:"Deloitte Việt Nam",sector:"Big4 – Kiểm toán & Tư vấn",origin:"Mạng lưới toàn cầu (gốc Anh – Mỹ)",
+about:"Một trong bốn hãng kiểm toán lớn nhất thế giới (Big4). Tại Việt Nam có văn phòng ở Hà Nội và TP.HCM.",
+roles:["Audit Intern / Associate","Tax Associate","Consulting / Risk Advisory Analyst"],
+process:"Nộp hồ sơ online → bài test (năng lực, tiếng Anh) → phỏng vấn (nhóm và/hoặc cá nhân) → offer. Tuyển thực tập kiểm toán mạnh vào mùa thu để kịp mùa kiểm toán cuối năm.",
+tip:"Sinh viên năm cuối nên theo dõi đợt tuyển từ tháng 8–10."},
+{id:"pwc",name:"PwC Việt Nam",sector:"Big4 – Kiểm toán & Tư vấn",origin:"Mạng lưới toàn cầu (gốc Anh)",
+about:"Big4, cung cấp kiểm toán, thuế, tư vấn giao dịch và tư vấn quản lý. Văn phòng tại Hà Nội và TP.HCM.",
+roles:["Assurance Associate","Tax Associate","Consulting Analyst"],
+process:"Đăng ký online → bài đánh giá trực tuyến → phỏng vấn → offer. Có chương trình thực tập mùa cao điểm.",
+tip:"Coi trọng tiếng Anh và tư duy logic trong bài test."},
+{id:"ey",name:"EY Việt Nam",sector:"Big4 – Kiểm toán & Tư vấn",origin:"Mạng lưới toàn cầu (gốc Anh)",
+about:"Big4, trước đây là Ernst & Young. Dịch vụ: Assurance, Tax, Consulting, Strategy and Transactions.",
+roles:["Audit Associate","Tax Associate","Consulting Analyst"],
+process:"Hồ sơ → test online → phỏng vấn → offer, tuyển tập trung theo đợt.",
+tip:"Gợi ý sinh viên tìm hiểu bốn mảng dịch vụ để trả lời câu “vì sao chọn mảng này”."},
+{id:"kpmg",name:"KPMG Việt Nam",sector:"Big4 – Kiểm toán & Tư vấn",origin:"Mạng lưới toàn cầu (gốc Hà Lan – Anh)",
+about:"Big4, dịch vụ kiểm toán, thuế và tư vấn. Văn phòng ở Hà Nội, TP.HCM, Đà Nẵng.",
+roles:["Audit Intern / Associate","Tax","Advisory Analyst"],
+process:"Hồ sơ → bài test → phỏng vấn → offer.",
+tip:"Câu hỏi thường gặp: phân biệt bốn hãng Big4. Hãy chuẩn bị điểm khác biệt về văn hoá và mảng mạnh."},
+{id:"vcb",name:"Vietcombank",sector:"Ngân hàng nhà nước",origin:"Việt Nam, thành lập 1963",
+about:"Ngân hàng TMCP Ngoại thương Việt Nam, thuộc nhóm ngân hàng có vốn nhà nước chi phối (cùng BIDV, VietinBank, Agribank). Mạnh về thanh toán quốc tế, ngoại hối.",
+roles:["Giao dịch viên","Chuyên viên QHKH","Chuyên viên thẩm định","Chuyên viên công nghệ"],
+process:"Tuyển tập trung theo đợt: hồ sơ → thi viết (kiến thức chung, nghiệp vụ, tiếng Anh, tư duy) → phỏng vấn.",
+tip:"Đề thi viết là rào cản chính; sinh viên nên ôn nghiệp vụ ngân hàng và tiếng Anh."},
+{id:"bidv",name:"BIDV",sector:"Ngân hàng nhà nước",origin:"Việt Nam, thành lập 1957",
+about:"Ngân hàng TMCP Đầu tư và Phát triển Việt Nam, một trong các ngân hàng có quy mô tài sản lớn nhất, mạng lưới chi nhánh rộng.",
+roles:["Giao dịch viên","Chuyên viên QHKH cá nhân / doanh nghiệp","Chuyên viên công nghệ"],
+process:"Tuyển theo đợt toàn hệ thống: hồ sơ → thi tuyển → phỏng vấn.",
+tip:"Phù hợp sinh viên ưu tiên sự ổn định."},
+{id:"tcb",name:"Techcombank",sector:"Ngân hàng TMCP tư nhân",origin:"Việt Nam, thành lập 1993",
+about:"Ngân hàng tư nhân lớn, nổi bật về chuyển đổi số và dữ liệu. Tuyển nhiều vị trí công nghệ, dữ liệu bên cạnh khối kinh doanh.",
+roles:["RM khách hàng cá nhân / doanh nghiệp","Data Analyst","Business Analyst","Chương trình tài năng trẻ"],
+process:"Ứng tuyển online → bài test → phỏng vấn nhiều vòng; chương trình dành cho sinh viên mới tốt nghiệp có thêm assessment centre.",
+tip:"Tên chương trình tài năng trẻ thay đổi theo năm, kiểm tra trang tuyển dụng chính thức."},
+{id:"vpb",name:"VPBank",sector:"Ngân hàng TMCP tư nhân",origin:"Việt Nam, thành lập 1993",
+about:"Ngân hàng tư nhân quy mô lớn, mạnh mảng bán lẻ và tài chính tiêu dùng (công ty con FE Credit).",
+roles:["RM","Chuyên viên bán hàng","Chuyên viên rủi ro","Management Trainee / chương trình tài năng"],
+process:"Hồ sơ online → test → phỏng vấn.",
+tip:"Khối bán hàng tuyển số lượng lớn quanh năm."},
+{id:"mb",name:"MB (Ngân hàng Quân đội)",sector:"Ngân hàng TMCP tư nhân",origin:"Việt Nam, thành lập 1994",
+about:"Ngân hàng TMCP Quân đội, cổ đông lớn gồm các doanh nghiệp quân đội như Viettel. Phát triển mạnh ngân hàng số (App MBBank).",
+roles:["RM","Giao dịch viên","Chuyên viên công nghệ, dữ liệu"],
+process:"Hồ sơ → test → phỏng vấn; có chương trình tuyển sinh viên mới tốt nghiệp theo đợt.",
+tip:"Nhu cầu nhân sự công nghệ và dữ liệu tăng mạnh."},
+{id:"unilever",name:"Unilever Việt Nam",sector:"Hàng tiêu dùng nhanh (FMCG)",origin:"Anh, hoạt động tại Việt Nam từ 1995",
+about:"Tập đoàn hàng tiêu dùng với các nhãn như OMO, Sunlight, Lifebuoy, P/S, Knorr. Nổi tiếng với chương trình quản trị viên tập sự UFLP.",
+roles:["Unilever Future Leaders Programme (UFLP)","Intern các phòng ban","Marketing, Customer Development, Supply Chain, Finance"],
+process:"Ứng tuyển online → bài đánh giá trực tuyến (game, năng lực) → video phỏng vấn → assessment centre → phỏng vấn lãnh đạo.",
+tip:"UFLP thường mở đơn vào khoảng đầu năm. Customer Development là tên Unilever gọi khối Sales."},
+{id:"pg",name:"P&G Việt Nam",sector:"Hàng tiêu dùng nhanh (FMCG)",origin:"Mỹ, hoạt động tại Việt Nam từ 1995",
+about:"Procter & Gamble, nhãn hàng: Tide, Downy, Pampers, Head & Shoulders, Gillette. Chính sách thăng tiến nội bộ (build from within): quản lý được đào tạo từ nhân viên tuyển từ đầu.",
+roles:["Intern / Full-time: Brand, Sales, Supply Chain, Finance, HR"],
+process:"Ứng tuyển online → bài test trực tuyến (P&G Online Assessment) → phỏng vấn nhiều vòng.",
+tip:"Câu hỏi hành vi theo các năng lực lãnh đạo; sinh viên nên chuẩn bị ví dụ theo cấu trúc STAR."},
+{id:"nestle",name:"Nestlé Việt Nam",sector:"Hàng tiêu dùng nhanh (FMCG)",origin:"Thụy Sĩ",
+about:"Tập đoàn thực phẩm đồ uống lớn nhất thế giới. Nhãn tại Việt Nam: Nescafé, Milo, Maggi, Nestlé. Có nhiều nhà máy tại Việt Nam.",
+roles:["Management Trainee","Intern","Sales, Marketing, Supply Chain, kỹ thuật"],
+process:"Hồ sơ → test online → phỏng vấn → assessment centre (chương trình MT).",
+tip:"Chuỗi cung ứng và nhà máy là mảng tuyển nhiều."},
+{id:"masan",name:"Masan Group",sector:"Tập đoàn tiêu dùng – bán lẻ",origin:"Việt Nam",
+about:"Tập đoàn tư nhân với Masan Consumer (Chin-su, Omachi, Nam Ngư), WinCommerce (chuỗi WinMart/WinMart+), Masan MEATLife, Phúc Long.",
+roles:["Management Trainee","Sales, Marketing","Quản lý cửa hàng bán lẻ"],
+process:"Hồ sơ → test → phỏng vấn → assessment centre (MT).",
+tip:"Môi trường nhịp độ nhanh, yêu cầu cao về kết quả."},
+{id:"vinamilk",name:"Vinamilk",sector:"Hàng tiêu dùng nhanh (FMCG)",origin:"Việt Nam, thành lập 1976",
+about:"Công ty Cổ phần Sữa Việt Nam, doanh nghiệp sữa lớn nhất Việt Nam, có hệ thống trang trại và nhà máy trong nước.",
+roles:["Chương trình tài năng trẻ / MT","Sales, Marketing, Supply Chain"],
+process:"Hồ sơ → test → phỏng vấn.",
+tip:"Tên chương trình tuyển sinh viên thay đổi theo năm."},
+{id:"vingroup",name:"Vingroup",sector:"Tập đoàn đa ngành",origin:"Việt Nam",
+about:"Tập đoàn tư nhân lớn với Vinhomes (bất động sản), VinFast (ô tô điện), Vinpearl (du lịch), Vinschool, Vinmec.",
+roles:["Nhiều vị trí theo công ty thành viên","Chương trình tuyển tài năng trẻ"],
+process:"Theo từng công ty thành viên: hồ sơ → test → phỏng vấn.",
+tip:"Sinh viên nên ứng tuyển theo công ty thành viên phù hợp ngành học."},
+{id:"fpt",name:"FPT",sector:"Công nghệ",origin:"Việt Nam, thành lập 1988",
+about:"Tập đoàn công nghệ lớn: FPT Software (xuất khẩu phần mềm), FPT Telecom (viễn thông), FPT Retail (FPT Shop, Long Châu), giáo dục.",
+roles:["Fresher / Intern phần mềm","Business Analyst","Sales, Marketing tại FPT Retail, FPT Telecom"],
+process:"Hồ sơ → test kỹ thuật hoặc năng lực → phỏng vấn; có các đợt tuyển fresher.",
+tip:"Sinh viên kinh tế phù hợp với vị trí BA, Sales, kế toán – tài chính trong tập đoàn."},
+{id:"viettel",name:"Viettel",sector:"Viễn thông – Công nghệ",origin:"Việt Nam, doanh nghiệp thuộc Bộ Quốc phòng",
+about:"Tập đoàn Công nghiệp – Viễn thông Quân đội, nhà mạng lớn nhất Việt Nam, có đầu tư viễn thông ở nhiều nước.",
+roles:["Viettel Digital Talent (chương trình tài năng số)","Kinh doanh, tài chính, nhân sự"],
+process:"Hồ sơ → test → phỏng vấn; Viettel Digital Talent có giai đoạn đào tạo và làm dự án.",
+tip:"Viettel Digital Talent mở đơn hằng năm, nhận cả sinh viên khối kinh tế cho mảng dữ liệu, kinh doanh số."},
+{id:"samsung",name:"Samsung Electronics Việt Nam",sector:"Sản xuất – Điện tử (FDI)",origin:"Hàn Quốc",
+about:"Nhà đầu tư nước ngoài lớn tại Việt Nam, nhà máy tại Bắc Ninh, Thái Nguyên; trung tâm R&D tại Hà Nội.",
+roles:["Kỹ sư","Nhân viên văn phòng: mua hàng, kế toán, nhân sự, xuất nhập khẩu"],
+process:"Hồ sơ → bài thi GSAT (tư duy, toán, logic) → phỏng vấn.",
+tip:"GSAT là vòng loại chính, cần luyện đề. Biết tiếng Hàn là lợi thế."},
+{id:"shopee",name:"Shopee",sector:"Thương mại điện tử",origin:"Singapore (thuộc Sea Group)",
+about:"Sàn thương mại điện tử lớn ở Đông Nam Á và Việt Nam.",
+roles:["Business Development","Marketing","Data Analyst","Operations"],
+process:"Hồ sơ → test (số học, logic, tình huống) → phỏng vấn.",
+tip:"Coi trọng tư duy số liệu và tốc độ; sinh viên nên luyện Excel và SQL."},
+{id:"momo",name:"MoMo",sector:"Fintech",origin:"Việt Nam",
+about:"Ví điện tử phổ biến tại Việt Nam, mở rộng sang thanh toán, tài chính tiêu dùng, bảo hiểm qua đối tác.",
+roles:["Data Analyst","Business Analyst","Marketing","Product"],
+process:"Hồ sơ → bài test → phỏng vấn.",
+tip:"Lựa chọn tốt cho sinh viên muốn kết hợp tài chính và công nghệ."}
+];
+
+const GL=[
+["JD","Job Description: bản mô tả công việc gồm nhiệm vụ, yêu cầu, quyền lợi."],
+["Intern","Thực tập sinh, thường làm 2–6 tháng, có hoặc không có trợ cấp."],
+["Fresher","Người mới tốt nghiệp, dưới 1 năm kinh nghiệm."],
+["Junior / Senior","Cấp độ kinh nghiệm: Junior khoảng 1–3 năm, Senior thường từ 3–5 năm trở lên."],
+["Management Trainee (MT)","Chương trình quản trị viên tập sự, luân chuyển nhiều phòng ban để đào tạo thành quản lý."],
+["ATS","Applicant Tracking System: phần mềm quản lý và lọc hồ sơ ứng viên tự động theo từ khoá."],
+["Headhunter","Người hoặc công ty săn nhân sự, được doanh nghiệp trả phí khi tuyển thành công."],
+["Employer Branding","Xây dựng thương hiệu nhà tuyển dụng để thu hút ứng viên."],
+["EVP","Employee Value Proposition: những giá trị doanh nghiệp cam kết mang lại cho nhân viên."],
+["Assessment Centre","Vòng đánh giá tập trung: giải case nhóm, thuyết trình, phỏng vấn trong một buổi."],
+["STAR","Cấu trúc trả lời câu hỏi hành vi: Situation, Task, Action, Result."],
+["Offer letter","Thư mời nhận việc nêu vị trí, lương, ngày bắt đầu, thời gian thử việc."],
+["Lương Gross","Tổng lương trước khi trừ bảo hiểm bắt buộc và thuế TNCN."],
+["Lương Net","Lương thực nhận sau khi trừ bảo hiểm bắt buộc và thuế TNCN."],
+["Thử việc","Theo Bộ luật Lao động 2019, tối đa 60 ngày với công việc cần trình độ cao đẳng trở lên; lương thử việc ít nhất 85% lương chính thức."],
+["KPI","Key Performance Indicator: chỉ số đo hiệu quả công việc."],
+["C&B","Compensation & Benefits: mảng lương thưởng, phúc lợi trong nhân sự."],
+["HRBP","HR Business Partner: nhân sự đồng hành cùng một khối kinh doanh."],
+["Referral","Ứng viên được nhân viên nội bộ giới thiệu."],
+["MT / GT","Trong bán hàng FMCG: Modern Trade (siêu thị, chuỗi) và General Trade (tạp hoá, chợ)."],
+["Big4","Bốn hãng kiểm toán lớn: Deloitte, PwC, EY, KPMG."],
+["ACCA","Chứng chỉ kế toán công chứng Anh quốc, được Big4 đánh giá cao."]
+];
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let known=new Set(store.get("jobneu-known",[]));
+const saveKnown=()=>store.set("jobneu-known",[...known]);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+/* ---------- browse lists ---------- */
+function browser(cfg){
+  let filter="Tất cả",q="",sel=cfg.data[0].id;
+  const groups=["Tất cả",...new Set(cfg.data.map(cfg.group))];
+  const chips=$(cfg.chips);
+  chips.innerHTML=groups.map(g=>`<button class="chip" aria-pressed="${g===filter}">${esc(g)}</button>`).join("");
+  chips.onclick=e=>{const b=e.target.closest(".chip");if(!b)return;filter=b.textContent;[...chips.children].forEach(c=>c.setAttribute("aria-pressed",c===b));render()};
+  $(cfg.search).oninput=e=>{q=e.target.value.toLowerCase().trim();render()};
+  function render(){
+    const items=cfg.data.filter(d=>(filter==="Tất cả"||cfg.group(d)===filter)&&(!q||JSON.stringify(d).toLowerCase().includes(q)));
+    const list=$(cfg.list);
+    list.innerHTML=items.length?items.map(d=>`<button class="item" role="option" data-id="${d.id}" aria-selected="${d.id===sel}"><span>${esc(d.name)}<small>${esc(cfg.sub(d))}</small></span>${known.has(cfg.key(d))?'<span class="tick" title="Đã nhớ">✓</span>':""}</button>`).join(""):`<p style="padding:14px;margin:0;color:var(--muted)">Không có kết quả. Thử từ khoá khác.</p>`;
+    if(items.length&&!items.some(d=>d.id===sel))sel=items[0].id;
+    list.querySelectorAll(".item").forEach(b=>b.setAttribute("aria-selected",b.dataset.id===sel));
+    const d=cfg.data.find(x=>x.id===sel);
+    $(cfg.detail).innerHTML=d?cfg.detailHTML(d):"";
+    const kb=$(cfg.detail).querySelector("[data-know]");
+    if(kb)kb.onclick=()=>{const k=cfg.key(d);known.has(k)?known.delete(k):known.add(k);saveKnown();render();fcRender()};
+  }
+  $(cfg.list).onclick=e=>{const b=e.target.closest(".item");if(!b)return;sel=b.dataset.id;render();if(innerWidth<760)$(cfg.detail).scrollIntoView({behavior:"smooth",block:"start"})};
+  return render;
+}
+const lst=a=>`<ul class="clean">${a.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
+const pills=a=>`<div class="pills">${a.map(x=>`<span class="pill">${esc(x)}</span>`).join("")}</div>`;
+const knowBtn=k=>`<div class="row-actions"><button class="btn ${known.has(k)?"ghost":""}" data-know>${known.has(k)?"Bỏ đánh dấu đã nhớ":"Đánh dấu đã nhớ"}</button></div>`;
+
+const renderPos=browser({data:POS,group:d=>d.field,chips:"#posChips",search:"#posSearch",list:"#posList",detail:"#posDetail",sub:d=>d.en,key:d=>"pos:"+d.id,
+detailHTML:d=>`<span class="tag">${esc(d.field)}</span><h2>${esc(d.name)}</h2><p class="en">${esc(d.en)}</p><p style="margin:0">${esc(d.desc)}</p>
+<div class="grid2"><div><p class="lbl">Công việc hằng ngày</p>${lst(d.tasks)}</div><div><p class="lbl">Kỹ năng cần có</p>${lst(d.skills)}</div>
+<div><p class="lbl">Công cụ</p>${pills(d.tools)}</div><div><p class="lbl">Ngành học phù hợp</p>${pills(d.majors)}</div></div>
+<div style="margin-top:16px"><p class="lbl">Lộ trình thăng tiến</p><div class="ladder">${d.ladder.map(esc).map(x=>`<span>${x}</span>`).join("<i>→</i>")}</div></div>
+<div style="margin-top:16px"><p class="lbl">Câu hỏi phỏng vấn hay gặp</p>${lst(d.interview)}</div>
+<div class="tip"><b>Khi tư vấn:</b> ${esc(d.tip)}</div>${knowBtn("pos:"+d.id)}`});
+
+const renderCo=browser({data:CO,group:d=>d.sector.split(" – ")[0].replace("Ngân hàng nhà nước","Ngân hàng").replace("Ngân hàng TMCP tư nhân","Ngân hàng"),chips:"#coChips",search:"#coSearch",list:"#coList",detail:"#coDetail",sub:d=>d.sector,key:d=>"co:"+d.id,
+detailHTML:d=>`<span class="tag">${esc(d.sector)}</span><h2>${esc(d.name)}</h2><p class="en">${esc(d.origin)}</p><p style="margin:0">${esc(d.about)}</p>
+<div class="grid2"><div><p class="lbl">Vị trí / chương trình hay tuyển</p>${lst(d.roles)}</div><div><p class="lbl">Quy trình tuyển</p><p style="margin:0">${esc(d.process)}</p></div></div>
+<div class="tip"><b>Lưu ý:</b> ${esc(d.tip)}</div>${knowBtn("co:"+d.id)}`});
+
+$("#glBody").innerHTML=GL.map(([t,m])=>`<tr><td>${esc(t)}</td><td>${esc(m)}</td></tr>`).join("");
+
+/* ---------- flashcards ---------- */
+const DECKS={
+  pos:()=>POS.map(d=>({k:"pos:"+d.id,f:`${d.name}\n(${d.en})`,b:`${d.desc}\n\nKỹ năng: ${d.skills.join(", ")}\nCông cụ: ${d.tools.join(", ")}\nLộ trình: ${d.ladder.join(" → ")}`})),
+  co:()=>CO.map(d=>({k:"co:"+d.id,f:d.name,b:`${d.sector} · ${d.origin}\n\n${d.about}\n\nHay tuyển: ${d.roles.join("; ")}\nQuy trình: ${d.process}`})),
+  gl:()=>GL.map(([t,m])=>({k:"gl:"+t,f:t,b:m}))
+};
+let deck=[],fi=0,flipped=false;
+function buildDeck(shuf){let d=DECKS[$("#deckSel").value]();if($("#hideKnown").checked)d=d.filter(c=>!known.has(c.k));deck=shuf?shuffle(d):d;fi=0;fcRender()}
+function fcRender(){
+  const all=DECKS[$("#deckSel").value](),kn=all.filter(c=>known.has(c.k)).length;
+  $("#fcKnown").textContent=`Đã nhớ ${kn} / ${all.length}`;$("#fcBar").style.width=(all.length?kn/all.length*100:0)+"%";
+  if(!deck.length){$("#fcFront").textContent="Bạn đã nhớ hết bộ thẻ này.";$("#fcBack").hidden=true;$("#fcCount").textContent="0 / 0";return}
+  fi=Math.min(fi,deck.length-1);const c=deck[fi];
+  $("#fcCount").textContent=`${fi+1} / ${deck.length}`;
+  $("#fcFront").textContent=c.f;$("#fcFront").style.whiteSpace="pre-line";$("#fcBack").textContent=c.b;
+  $("#fcFront").hidden=flipped;$("#fcBack").hidden=!flipped;
+  $("#fcKnow").textContent=known.has(c.k)?"Bỏ đã nhớ":"Đã nhớ";
+}
+const flip=()=>{flipped=!flipped;fcRender()};
+$("#fcCard").onclick=flip;$("#fcFlip").onclick=flip;
+$("#fcCard").onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}};
+$("#fcNext").onclick=()=>{if(deck.length){fi=(fi+1)%deck.length;flipped=false;fcRender()}};
+$("#fcPrev").onclick=()=>{if(deck.length){fi=(fi-1+deck.length)%deck.length;flipped=false;fcRender()}};
+$("#fcShuffle").onclick=()=>{flipped=false;buildDeck(true)};
+$("#fcKnow").onclick=()=>{const c=deck[fi];if(!c)return;known.has(c.k)?known.delete(c.k):known.add(c.k);saveKnown();
+  if($("#hideKnown").checked&&known.has(c.k)){deck.splice(fi,1)}else{fi=(fi+1)%deck.length}flipped=false;fcRender();renderPos();renderCo()};
+$("#deckSel").onchange=()=>{flipped=false;buildDeck(false)};$("#hideKnown").onchange=()=>{flipped=false;buildDeck(false)};
+
+/* ---------- quiz ---------- */
+function pickOthers(pool,right,n){return shuffle([...new Set(pool.filter(x=>x!==right))]).slice(0,n)}
+const GEN=[
+  ()=>{const c=shuffle(CO)[0];return{q:`${c.name} thuộc nhóm ngành nào?`,a:c.sector,o:pickOthers(CO.map(x=>x.sector),c.sector,3),e:c.about}},
+  ()=>{const p=shuffle(POS)[0];return{q:`Vị trí “${p.en}” trong tiếng Việt là gì?`,a:p.name,o:pickOthers(POS.map(x=>x.name),p.name,3),e:p.desc}},
+  ()=>{const p=shuffle(POS)[0],t=shuffle(p.tasks)[0];return{q:`Công việc “${t}” là nhiệm vụ hằng ngày của vị trí nào?`,a:p.name,o:pickOthers(POS.filter(x=>!x.tasks.includes(t)).map(x=>x.name),p.name,3),e:`${p.name}: ${p.tasks.join("; ")}.`}},
+  ()=>{const p=shuffle(POS.filter(x=>x.majors.length<4))[0],m=p.majors[0];const others=POS.filter(x=>!x.majors.includes(m)).map(x=>x.name);return{q:`Sinh viên ngành ${m} phù hợp nhất với vị trí nào dưới đây?`,a:p.name,o:pickOthers(others,p.name,3),e:`Ngành phù hợp với ${p.name}: ${p.majors.join(", ")}.`}},
+  ()=>{const [t,m]=shuffle(GL)[0];return{q:`Thuật ngữ nào có nghĩa: “${m}”`,a:t,o:pickOthers(GL.map(x=>x[0]),t,3),e:`${t}: ${m}`}},
+  ()=>{const c=shuffle(CO.filter(x=>x.origin))[0];return{q:`${c.name} có nguồn gốc / thông tin thành lập nào?`,a:c.origin,o:pickOthers(CO.map(x=>x.origin),c.origin,3),e:c.about}},
+  ()=>{const p=shuffle(POS)[0];return{q:`Lộ trình nào là của vị trí ${p.name}?`,a:p.ladder.join(" → "),o:pickOthers(POS.map(x=>x.ladder.join(" → ")),p.ladder.join(" → "),3),e:p.tip}}
+];
+let qs=[],qi=0,score=0;
+function newQuiz(){qs=[];const seen=new Set();let guard=0;while(qs.length<10&&guard++<200){const q=GEN[Math.floor(Math.random()*GEN.length)]();if(seen.has(q.q)||q.o.length<3)continue;seen.add(q.q);q.opts=shuffle([q.a,...q.o]);qs.push(q)}qi=0;score=0;qRender()}
+function qRender(){
+  $("#qzScore").textContent=`Đúng ${score}`;$("#qzExp").hidden=true;$("#qzNext").disabled=true;
+  if(qi>=qs.length){$("#qzNum").textContent="Hoàn thành";$("#qzQ").textContent=`Bạn đúng ${score}/${qs.length} câu. ${score>=8?"Rất tốt!":score>=5?"Khá ổn, ôn thêm phần sai nhé.":"Hãy xem lại tab Vị trí và Công ty rồi làm lại."}`;$("#qzOpts").innerHTML="";return}
+  const q=qs[qi];$("#qzNum").textContent=`Câu ${qi+1} / ${qs.length}`;$("#qzQ").textContent=q.q;
+  $("#qzOpts").innerHTML=q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join("");
+}
+$("#qzOpts").onclick=e=>{const b=e.target.closest(".opt");if(!b||!$("#qzNext").disabled)return;const q=qs[qi];
+  [...$("#qzOpts").children].forEach(x=>{if(q.opts[x.dataset.i]===q.a)x.classList.add("right")});
+  if(q.opts[b.dataset.i]===q.a)score++;else b.classList.add("wrong");
+  $("#qzScore").textContent=`Đúng ${score}`;$("#qzExp").textContent=q.e;$("#qzExp").hidden=false;$("#qzNext").disabled=false;
+  $("#qzNext").textContent=qi===qs.length-1?"Xem kết quả":"Câu tiếp"};
+$("#qzNext").onclick=()=>{qi++;qRender()};
+$("#qzRestart").onclick=newQuiz;
+
+/* ---------- routing ---------- */
+const VIEWS=["vi-tri","cong-ty","on-tap","nghiep-vu"];
+function route(){const v=VIEWS.includes(location.hash.slice(1))?location.hash.slice(1):"vi-tri";
+  VIEWS.forEach(x=>{$("#v-"+x).hidden=x!==v});
+  document.querySelectorAll("nav.tabs a").forEach(a=>a.toggleAttribute("aria-current",a.dataset.view===v)||a.dataset.view===v&&a.setAttribute("aria-current","page"));
+  document.querySelectorAll("nav.tabs a").forEach(a=>{if(a.dataset.view===v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});}
+addEventListener("hashchange",route);
+renderPos();renderCo();buildDeck(false);newQuiz();route();
+</script>
+
+</html>
